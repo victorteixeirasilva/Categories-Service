@@ -19,10 +19,15 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    /**
+     * @description - Creates a new goal category for the user. | Cria uma nova categoria de objetivos para o usuário.
+     * @param idUser - User id | Id do usuário
+     * @param dto - DTO (Data Transfer Object) with Category information | DTO (Objeto de transferência de dados) com Informações da categoria
+     * @return - Category created | Categoria criada
+     */
     public Category addCategory(UUID idUser, RequestCategoryDTO dto) {
         var category = new Category(idUser, dto);
         return categoryRepository.saveCategory(category);
-        //TODO: BLUE
     }
 
     public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO dto) {
