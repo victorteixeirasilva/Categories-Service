@@ -25,15 +25,23 @@ public class CategoryService {
      * @param dto - DTO (Data Transfer Object) with Category information | DTO (Objeto de transferência de dados) com Informações da categoria
      * @return - Category created | Categoria criada
      */
-    public Category addCategory(UUID idUser, RequestCategoryDTO dto) {
+    public Category addCategory(
+            UUID idUser,
+            RequestCategoryDTO dto
+    ) {
         var category = new Category(idUser, dto);
         return categoryRepository.saveCategory(category);
     }
 
-    public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO dto) {
+    public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(
+            UUID idUser,
+            RequestAddObjectiveToCategoryDTO dto
+    ) {
         //TODO: GREEN
+        var category = categoryRepository.findCategoryByIdAndIdUser(dto.idCategory(), idUser);
+        var objective = categoryRepository.findObjectiveByIdAndIdUser(dto.idObjective(), idUser);
+        return categoryRepository.addObjectiveToCategory(idUser, dto);
         //TODO: BLUE
-        return null;
     }
 
     public ResponseMessageDTO removeObjectiveToCategory(UUID idUser, UUID idCategory, UUID idObjective) {
