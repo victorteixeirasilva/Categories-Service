@@ -31,7 +31,6 @@ public class CategoryService {
     }
 
     public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO dto) {
-        //TODO: RED
         //TODO: GREEN
         //TODO: BLUE
         return null;
