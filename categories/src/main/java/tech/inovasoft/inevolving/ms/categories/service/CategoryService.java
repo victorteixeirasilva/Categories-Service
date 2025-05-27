@@ -2,6 +2,7 @@ package tech.inovasoft.inevolving.ms.categories.service;
 
 import org.springframework.stereotype.Service;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoriesDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Service
 public class CategoryService {
 
-    public Category addCategory(UUID idUser) {
+    public Category addCategory(UUID idUser, RequestCategoryDTO dto) {
         //TODO: RED
         //TODO: GREEN
         //TODO: BLUE

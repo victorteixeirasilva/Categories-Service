@@ -1,0 +1,73 @@
+package tech.inovasoft.inevolving.ms.categories;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
+import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
+import tech.inovasoft.inevolving.ms.categories.service.CategoryService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+public class CategoryServiceSuccessTest {
+
+    @Mock
+    private CategoryRepository categoryRepository;
+
+    @InjectMocks
+    private CategoryService categoryService;
+
+    @Test
+    public void addCategory() {
+        // Given
+        var idUser = UUID.randomUUID();
+        var requestDTO = new RequestCategoryDTO(
+                "categoryName",
+                "categoryDescription"
+        );
+
+        List<UUID> objectives = new ArrayList<>();
+
+        var newCategory = new Category(
+                idUser,
+                requestDTO
+        );
+
+        var expectedCategory = new Category(
+                UUID.randomUUID(),
+                idUser,
+                requestDTO.categoryName(),
+                requestDTO.categoryDescription(),
+                objectives
+        );
+
+        // When
+        when(categoryRepository.saveCategory(newCategory)).thenReturn(expectedCategory);
+        var result = categoryService.addCategory(idUser, requestDTO);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(expectedCategory.getId(), result.getId());
+        assertEquals(expectedCategory.getIdUser(), result.getIdUser());
+        assertEquals(expectedCategory.getCategoryName(), result.getCategoryName());
+        assertEquals(expectedCategory.getCategoryDescription(), result.getCategoryDescription());
+        assertEquals(expectedCategory.getObjectives(), result.getObjectives());
+        assertEquals(expectedCategory.getObjectives().size(), result.getObjectives().size());
+
+        verify(categoryRepository).saveCategory(newCategory);
+
+    }
+
+
+}

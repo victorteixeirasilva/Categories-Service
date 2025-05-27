@@ -2,6 +2,7 @@ package tech.inovasoft.inevolving.ms.categories.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,4 +25,9 @@ public class Category {
     @ElementCollection
     List<UUID> objectives;
 
+    public Category(UUID idUser, RequestCategoryDTO requestDTO) {
+        this.idUser = idUser;
+        this.categoryName = requestDTO.categoryName();
+        this.categoryDescription = requestDTO.categoryDescription();
+    }
 }

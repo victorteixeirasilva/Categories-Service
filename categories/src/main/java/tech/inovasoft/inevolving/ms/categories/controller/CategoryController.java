@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoriesDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
@@ -33,11 +34,12 @@ public class CategoryController {
     @Async("asyncExecutor")
     @PostMapping("/{idUser}")
     public CompletableFuture<ResponseEntity<Category>> addCategory(
-            @PathVariable("idUser") UUID idUser
+            @PathVariable("idUser") UUID idUser,
+            @RequestBody RequestCategoryDTO dto
     ){
-        return CompletableFuture.completedFuture(
-                ResponseEntity.ok(categoryService.addCategory(idUser))
-        );
+        return CompletableFuture.completedFuture(ResponseEntity.ok(
+                categoryService.addCategory(idUser, dto)
+        ));
     }
 
     @Operation(
