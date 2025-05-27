@@ -15,7 +15,6 @@ import java.util.UUID;
 public class CategoryService {
 
     public Category addCategory(UUID idUser, RequestCategoryDTO dto) {
-        //TODO: RED
         //TODO: GREEN
         //TODO: BLUE
         return null;
