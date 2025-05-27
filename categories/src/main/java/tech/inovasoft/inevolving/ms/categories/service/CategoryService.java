@@ -33,15 +33,21 @@ public class CategoryService {
         return categoryRepository.saveCategory(category);
     }
 
+    /**
+     * @description - Adds an objective to a category | Adiciona um objetivo a uma categoria
+     * @param idUser - User id | Id do usuário
+     * @param dto - DTO (Data Transfer Object) with Objective information | DTO (Objeto de transferência de dados) com Informações do objetivo
+     * @return - Category and new objective | Categoria e novo objetivo
+     */
     public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(
             UUID idUser,
             RequestAddObjectiveToCategoryDTO dto
     ) {
-        //TODO: GREEN
         var category = categoryRepository.findCategoryByIdAndIdUser(dto.idCategory(), idUser);
+
         var objective = categoryRepository.findObjectiveByIdAndIdUser(dto.idObjective(), idUser);
+
         return categoryRepository.addObjectiveToCategory(idUser, dto);
-        //TODO: BLUE
     }
 
     public ResponseMessageDTO removeObjectiveToCategory(UUID idUser, UUID idCategory, UUID idObjective) {
