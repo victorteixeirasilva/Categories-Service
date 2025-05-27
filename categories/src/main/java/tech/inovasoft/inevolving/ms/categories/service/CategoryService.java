@@ -1,5 +1,6 @@
 package tech.inovasoft.inevolving.ms.categories.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
@@ -8,16 +9,20 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCateg
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
+import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 
 import java.util.UUID;
 
 @Service
 public class CategoryService {
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     public Category addCategory(UUID idUser, RequestCategoryDTO dto) {
-        //TODO: GREEN
+        var category = new Category(idUser, dto);
+        return categoryRepository.saveCategory(category);
         //TODO: BLUE
-        return null;
     }
 
     public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO dto) {
