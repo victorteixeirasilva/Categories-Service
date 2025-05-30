@@ -23,4 +23,6 @@ public interface CategoryRepository {
     ResponseObjectiveDTO findObjectiveByIdAndIdUser(UUID uuid, UUID idUser);
 
     ResponseMessageDTO removeObjectiveToCategory(UUID idObjective, UUID idCategory);
+
+    ResponseMessageDTO removeCategory(Category category);
 }

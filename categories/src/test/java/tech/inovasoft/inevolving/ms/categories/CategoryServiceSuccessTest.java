@@ -152,5 +152,27 @@ public class CategoryServiceSuccessTest {
         verify(categoryRepository).removeObjectiveToCategory(idObjective, idCategory);
     }
 
+    @Test
+    public void removeCategory() {
+        // Given
+        var idUser = UUID.randomUUID();
+        var idCategory = UUID.randomUUID();
+
+        var category = new Category();
+        category.setId(idCategory);
+
+        // When
+        when(categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser)).thenReturn(category);
+        when(categoryRepository.removeCategory(category)).thenReturn(new ResponseMessageDTO("Category removed successfully"));
+        var result = categoryService.removeCategory(idUser, idCategory);
+
+        // Then
+        assertNotNull(result);
+        assertEquals("Category removed successfully", result.message());
+
+        verify(categoryRepository).findCategoryByIdAndIdUser(idCategory, idUser);
+        verify(categoryRepository).removeCategory(category);
+    }
+
 
 }
