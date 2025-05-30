@@ -8,6 +8,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateC
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoriesDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectivesByCategory;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 
@@ -89,7 +90,6 @@ public class CategoryService {
             UUID idCategory,
             RequestUpdateCategoryDTO dto
     ) {
-        //TODO: RED
         //TODO: GREEN
         //TODO: BLUE
         return null;
@@ -105,7 +105,7 @@ public class CategoryService {
     }
 
 
-    public Category getObjectivesByCategory(
+    public ResponseObjectivesByCategory getObjectivesByCategory(
             UUID idUser,
             UUID idCategory
     ) {

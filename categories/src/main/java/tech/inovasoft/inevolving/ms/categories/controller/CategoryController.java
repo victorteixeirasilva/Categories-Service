@@ -12,6 +12,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateC
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoriesDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectivesByCategory;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.service.CategoryService;
 
@@ -140,7 +141,7 @@ public class CategoryController {
     )
     @Async("asyncExecutor")
     @GetMapping("/{idUser}/{idCategory}")
-    public CompletableFuture<ResponseEntity<Category>> getCategories(
+    public CompletableFuture<ResponseEntity<ResponseObjectivesByCategory>> getCategories(
             @PathVariable("idUser") UUID idUser,
             @PathVariable("idCategory") UUID idCategory
     ){

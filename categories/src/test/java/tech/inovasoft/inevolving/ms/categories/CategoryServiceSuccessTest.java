@@ -1,5 +1,6 @@
 package tech.inovasoft.inevolving.ms.categories;
 
+import jakarta.persistence.ElementCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -7,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
@@ -172,6 +174,45 @@ public class CategoryServiceSuccessTest {
 
         verify(categoryRepository).findCategoryByIdAndIdUser(idCategory, idUser);
         verify(categoryRepository).removeCategory(category);
+    }
+
+    @Test
+    public void updateCategory() {
+        // Given
+        var idUser = UUID.randomUUID();
+        var idCategory = UUID.randomUUID();
+        var requestDTO = new RequestUpdateCategoryDTO("Category Name", "Category Description");
+        List<UUID> objectives = new ArrayList<>();
+        var oldCategory = new Category(
+                idCategory,
+                idUser,
+                "categoryName",
+                "categoryDescription",
+                objectives
+        );
+
+        var newCategory = new Category(
+                idCategory,
+                idUser,
+                requestDTO.categoryName(),
+                requestDTO.categoryDescription(),
+                objectives
+        );
+
+        // When
+        when(categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser)).thenReturn(oldCategory);
+        when(categoryRepository.saveCategory(newCategory)).thenReturn(newCategory);
+        var result = categoryService.updateCategory(idUser, idCategory, requestDTO);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(idCategory, result.getId());
+        assertEquals(idUser, result.getIdUser());
+        assertEquals(requestDTO.categoryName(), result.getCategoryName());
+        assertEquals(requestDTO.categoryDescription(), result.getCategoryDescription());
+
+        verify(categoryRepository).findCategoryByIdAndIdUser(idCategory, idUser);
+        verify(categoryRepository).saveCategory(newCategory);
     }
 
 
