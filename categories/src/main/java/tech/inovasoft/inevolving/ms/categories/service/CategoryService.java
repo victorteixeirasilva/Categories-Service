@@ -55,9 +55,10 @@ public class CategoryService {
             UUID idCategory,
             UUID idObjective
     ) {
-        //TODO: GREEN
+        var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
+        var objective = categoryRepository.findObjectiveByIdAndIdUser(idObjective, idUser);
+        return categoryRepository.removeObjectiveToCategory(idObjective, idCategory);
         //TODO: BLUE
-        return null;
     }
 
     public ResponseMessageDTO removeCategory(
