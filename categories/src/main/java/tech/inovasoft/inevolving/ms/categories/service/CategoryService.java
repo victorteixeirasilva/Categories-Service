@@ -69,6 +69,12 @@ public class CategoryService {
         return categoryRepository.removeObjectiveToCategory(idObjective, idCategory);
     }
 
+    /**
+     * @description - Removes a category | Remove uma categoria
+     * @param idUser - User id | Id do usuário
+     * @param idCategory - Category id | Id da categoria
+     * @return - Success message | Retorna uma mensagem de sucesso
+     */
     public ResponseMessageDTO removeCategory(
             UUID idUser,
             UUID idCategory
@@ -76,7 +82,6 @@ public class CategoryService {
         var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
 
         return categoryRepository.removeCategory(category);
-        //TODO: BLUE
     }
 
     public Category updateCategory(
