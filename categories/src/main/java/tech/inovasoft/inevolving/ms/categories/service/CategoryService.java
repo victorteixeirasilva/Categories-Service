@@ -73,9 +73,10 @@ public class CategoryService {
             UUID idUser,
             UUID idCategory
     ) {
-        //TODO: GREEN
+        var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
+
+        return categoryRepository.removeCategory(category);
         //TODO: BLUE
-        return null;
     }
 
     public Category updateCategory(
