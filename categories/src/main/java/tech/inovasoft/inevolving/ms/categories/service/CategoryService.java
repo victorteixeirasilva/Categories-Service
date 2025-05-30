@@ -50,36 +50,51 @@ public class CategoryService {
         return categoryRepository.addObjectiveToCategory(idUser, dto);
     }
 
-    public ResponseMessageDTO removeObjectiveToCategory(UUID idUser, UUID idCategory, UUID idObjective) {
+    public ResponseMessageDTO removeObjectiveToCategory(
+            UUID idUser,
+            UUID idCategory,
+            UUID idObjective
+    ) {
+        //TODO: GREEN
+        //TODO: BLUE
+        return null;
+    }
+
+    public ResponseMessageDTO removeCategory(
+            UUID idUser,
+            UUID idCategory
+    ) {
         //TODO: RED
         //TODO: GREEN
         //TODO: BLUE
         return null;
     }
 
-    public ResponseMessageDTO removeCategory(UUID idUser, UUID idCategory) {
+    public Category updateCategory(
+            UUID idUser,
+            UUID idCategory,
+            RequestUpdateCategoryDTO dto
+    ) {
         //TODO: RED
         //TODO: GREEN
         //TODO: BLUE
         return null;
     }
 
-    public Category updateCategory(UUID idUser, UUID idCategory, RequestUpdateCategoryDTO dto) {
+    public ResponseCategoriesDTO getCategories(
+            UUID idUser
+    ) {
         //TODO: RED
         //TODO: GREEN
         //TODO: BLUE
         return null;
     }
 
-    public ResponseCategoriesDTO getCategories(UUID idUser) {
-        //TODO: RED
-        //TODO: GREEN
-        //TODO: BLUE
-        return null;
-    }
 
-
-    public Category getObjectivesByCategory(UUID idUser, UUID idCategory) {
+    public Category getObjectivesByCategory(
+            UUID idUser,
+            UUID idCategory
+    ) {
         //TODO: RED
         //TODO: GREEN
         //TODO: BLUE

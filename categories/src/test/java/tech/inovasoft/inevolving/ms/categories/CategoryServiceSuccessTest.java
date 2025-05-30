@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
@@ -123,6 +124,32 @@ public class CategoryServiceSuccessTest {
         verify(categoryRepository).findCategoryByIdAndIdUser(requestDTO.idCategory(), idUser);
         verify(categoryRepository).findObjectiveByIdAndIdUser(requestDTO.idObjective(), idUser);
         verify(categoryRepository).addObjectiveToCategory(idUser, requestDTO);
+    }
+
+    @Test
+    public void removeObjectiveToCategory() {
+        // Given
+        var idUser = UUID.randomUUID();
+        var idCategory = UUID.randomUUID();
+        var idObjective = UUID.randomUUID();
+
+        var category = new Category();
+        category.setId(idCategory);
+        var objective = new ResponseObjectiveDTO(idObjective, "nameObjective", "descriptionObjective", "String statusObjective", Date.valueOf("2022-01-01"), idUser);
+
+        // When
+        when(categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser)).thenReturn(category);
+        when(categoryRepository.findObjectiveByIdAndIdUser(idObjective, idUser)).thenReturn(objective);
+        when(categoryRepository.removeObjectiveToCategory(idObjective, idCategory)).thenReturn(new ResponseMessageDTO("Objective removed successfully"));
+        var result = categoryService.removeObjectiveToCategory(idUser, idCategory, idObjective);
+
+        // Then
+        assertNotNull(result);
+        assertEquals("Objective removed successfully", result.message());
+
+        verify(categoryRepository).findCategoryByIdAndIdUser(idCategory, idUser);
+        verify(categoryRepository).findObjectiveByIdAndIdUser(idObjective, idUser);
+        verify(categoryRepository).removeObjectiveToCategory(idObjective, idCategory);
     }
 
 
