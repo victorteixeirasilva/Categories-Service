@@ -50,15 +50,23 @@ public class CategoryService {
         return categoryRepository.addObjectiveToCategory(idUser, dto);
     }
 
+    /**
+     * @description - Removes an objective from a category | Remove um objetivo de uma categoria
+     * @param idUser - User id | Id do usuário
+     * @param idCategory - Category id | Id da categoria
+     * @param idObjective - Objective id | Id do objetivo
+     * @return - Success message | Retorna uma mensagem de sucesso
+     */
     public ResponseMessageDTO removeObjectiveToCategory(
             UUID idUser,
             UUID idCategory,
             UUID idObjective
     ) {
         var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
+
         var objective = categoryRepository.findObjectiveByIdAndIdUser(idObjective, idUser);
+
         return categoryRepository.removeObjectiveToCategory(idObjective, idCategory);
-        //TODO: BLUE
     }
 
     public ResponseMessageDTO removeCategory(
