@@ -85,6 +85,13 @@ public class CategoryService {
         return categoryRepository.removeCategory(category);
     }
 
+    /**
+     * @description - Updates a category | Atualiza uma categoria
+     * @param idUser - User id | Id do usuário
+     * @param idCategory - Category id | Id da categoria
+     * @param dto - DTO (Data Transfer Object) with Category information | DTO (Objeto de transferência de dados) com Informações da categoria
+     * @return - Category updated | Categoria atualizada
+     */
     public Category updateCategory(
             UUID idUser,
             UUID idCategory,
@@ -96,7 +103,6 @@ public class CategoryService {
         category.setCategoryDescription(dto.categoryDescription());
 
         return categoryRepository.saveCategory(category);
-        //TODO: BLUE
     }
 
     public ResponseCategoriesDTO getCategories(
