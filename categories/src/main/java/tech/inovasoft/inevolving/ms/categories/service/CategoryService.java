@@ -90,9 +90,13 @@ public class CategoryService {
             UUID idCategory,
             RequestUpdateCategoryDTO dto
     ) {
-        //TODO: GREEN
+        var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
+
+        category.setCategoryName(dto.categoryName());
+        category.setCategoryDescription(dto.categoryDescription());
+
+        return categoryRepository.saveCategory(category);
         //TODO: BLUE
-        return null;
     }
 
     public ResponseCategoriesDTO getCategories(

@@ -181,7 +181,10 @@ public class CategoryServiceSuccessTest {
         // Given
         var idUser = UUID.randomUUID();
         var idCategory = UUID.randomUUID();
-        var requestDTO = new RequestUpdateCategoryDTO("Category Name", "Category Description");
+        var requestDTO = new RequestUpdateCategoryDTO(
+                "Category Name",
+                "Category Description"
+        );
         List<UUID> objectives = new ArrayList<>();
         var oldCategory = new Category(
                 idCategory,
