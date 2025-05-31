@@ -123,7 +123,12 @@ public class CategoryService {
         return new ResponseCategoriesDTO(idUser, categories);
     }
 
-
+    /**
+     * @description - Lists the objectives of a category | Lista os objetivos de uma categoria
+     * @param idUser - User id | Id do usuário
+     * @param idCategory - Category id | Id da categoria
+     * @return - List of objectives | Lista de objetivos
+     */
     public ResponseObjectivesByCategory getObjectivesByCategory(
             UUID idUser,
             UUID idCategory
@@ -141,6 +146,5 @@ public class CategoryService {
         }
 
         return new ResponseObjectivesByCategory(new ResponseCategoryDTO(category), objectives);
-        //TODO: BLUE
     }
 }
