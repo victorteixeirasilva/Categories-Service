@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
@@ -13,6 +14,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.*;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 import tech.inovasoft.inevolving.ms.categories.service.CategoryService;
+import tech.inovasoft.inevolving.ms.categories.service.client.ObjectiveServiceClient;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -29,6 +31,9 @@ public class CategoryServiceSuccessTest {
 
     @Mock
     private CategoryRepository categoryRepository;
+
+    @Mock
+    private ObjectiveServiceClient objectiveServiceClient;
 
     @InjectMocks
     private CategoryService categoryService;
@@ -316,6 +321,8 @@ public class CategoryServiceSuccessTest {
         // When
         when(categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser)).thenReturn(category);
         when(categoryRepository.getObjectivesByCategory(idCategory, idUser)).thenReturn(objectivesUUIDs);
+        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(0))).thenReturn(ResponseEntity.ok(objectives.get(0)));
+        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(1))).thenReturn(ResponseEntity.ok(objectives.get(1)));
         var result = categoryService.getObjectivesByCategory(idUser, idCategory);
 
         // Then

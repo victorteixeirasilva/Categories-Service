@@ -1,6 +1,7 @@
 package tech.inovasoft.inevolving.ms.categories.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
@@ -8,7 +9,9 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateC
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.*;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
+import tech.inovasoft.inevolving.ms.categories.service.client.ObjectiveServiceClient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +20,9 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ObjectiveServiceClient objectiveService;
 
     /**
      * @description - Creates a new goal category for the user. | Cria uma nova categoria de objetivos para o usuário.
@@ -122,8 +128,19 @@ public class CategoryService {
             UUID idUser,
             UUID idCategory
     ) {
-        //TODO: GREEN
+        var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
+
+        var objectivesList = categoryRepository.getObjectivesByCategory(idCategory, idUser);
+
+        List<ResponseObjectiveDTO> objectives = new ArrayList<>();
+
+        for (UUID id: objectivesList) {
+            var objectiveEntity = objectiveService.getObjectiveById(id);
+            ResponseObjectiveDTO objective = (ResponseObjectiveDTO) objectiveEntity.getBody();
+            objectives.add(objective);
+        }
+
+        return new ResponseObjectivesByCategory(new ResponseCategoryDTO(category), objectives);
         //TODO: BLUE
-        return null;
     }
 }
