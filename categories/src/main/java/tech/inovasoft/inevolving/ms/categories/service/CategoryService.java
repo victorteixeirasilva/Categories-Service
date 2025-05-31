@@ -103,6 +103,11 @@ public class CategoryService {
         return categoryRepository.saveCategory(category);
     }
 
+    /**
+     * @description - Lists the categories of the user | Lista as categorias do usuário
+     * @param idUser - User id | Id do usuário
+     * @return - List of categories | Lista de categorias
+     */
     public ResponseCategoriesDTO getCategories(
             UUID idUser
     ) {
@@ -110,7 +115,6 @@ public class CategoryService {
         List<ResponseCategoryDTO> categories = categoriesList.stream().map(ResponseCategoryDTO::new).toList();
 
         return new ResponseCategoriesDTO(idUser, categories);
-        //TODO: BLUE
     }
 
 
