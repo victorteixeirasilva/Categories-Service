@@ -5,13 +5,11 @@ import org.springframework.stereotype.Service;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
-import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoriesDTO;
-import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
-import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
-import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectivesByCategory;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.response.*;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -108,9 +106,11 @@ public class CategoryService {
     public ResponseCategoriesDTO getCategories(
             UUID idUser
     ) {
-        //TODO: GREEN
+        var categoriesList = categoryRepository.getCategories(idUser);
+        List<ResponseCategoryDTO> categories = categoriesList.stream().map(ResponseCategoryDTO::new).toList();
+
+        return new ResponseCategoriesDTO(idUser, categories);
         //TODO: BLUE
-        return null;
     }
 
 
