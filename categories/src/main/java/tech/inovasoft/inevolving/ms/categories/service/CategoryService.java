@@ -108,7 +108,6 @@ public class CategoryService {
     public ResponseCategoriesDTO getCategories(
             UUID idUser
     ) {
-        //TODO: RED
         //TODO: GREEN
         //TODO: BLUE
         return null;

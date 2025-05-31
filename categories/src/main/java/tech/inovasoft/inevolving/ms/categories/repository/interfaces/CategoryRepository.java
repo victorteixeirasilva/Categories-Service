@@ -7,6 +7,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessa
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -25,4 +26,6 @@ public interface CategoryRepository {
     ResponseMessageDTO removeObjectiveToCategory(UUID idObjective, UUID idCategory);
 
     ResponseMessageDTO removeCategory(Category category);
+
+    List<Category> getCategories(UUID idUser);
 }

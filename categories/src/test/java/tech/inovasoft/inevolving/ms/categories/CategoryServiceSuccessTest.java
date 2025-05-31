@@ -9,9 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
-import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
-import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
-import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.response.*;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 import tech.inovasoft.inevolving.ms.categories.service.CategoryService;
@@ -216,6 +214,63 @@ public class CategoryServiceSuccessTest {
 
         verify(categoryRepository).findCategoryByIdAndIdUser(idCategory, idUser);
         verify(categoryRepository).saveCategory(newCategory);
+    }
+
+    @Test
+    public void getCategories() {
+        // Given
+        var idUser = UUID.randomUUID();
+        List<ResponseCategoryDTO> categories = new ArrayList<>();
+        categories.add(new ResponseCategoryDTO(
+                UUID.randomUUID(),
+                "categoryName1",
+                "categoryDescription1"
+        ));
+        categories.add(new ResponseCategoryDTO(
+                UUID.randomUUID(),
+                "categoryName1",
+                "categoryDescription1"
+        ));
+        var responseCategoriesDTO = new ResponseCategoriesDTO(idUser, categories);
+        List<Category> categoryList = new ArrayList<>();
+        categoryList.add(
+                new Category(
+                        categories.get(0).id(),
+                        idUser,
+                        categories.get(0).categoryName(),
+                        categories.get(0).categoryDescription(),
+                        new ArrayList<>()
+
+                )
+        );
+        categoryList.add(
+                new Category(
+                        categories.get(1).id(),
+                        idUser,
+                        categories.get(1).categoryName(),
+                        categories.get(1).categoryDescription(),
+                        new ArrayList<>()
+
+                )
+        );
+
+        // When
+        when(categoryRepository.getCategories(idUser)).thenReturn(categoryList);
+        var result = categoryService.getCategories(idUser);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(responseCategoriesDTO.idUser(), result.idUser());
+        assertEquals(responseCategoriesDTO.categories().get(0).id(), result.categories().get(0).id());
+        assertEquals(responseCategoriesDTO.categories().get(0).categoryName(), result.categories().get(0).categoryName());
+        assertEquals(responseCategoriesDTO.categories().get(0).categoryDescription(), result.categories().get(0).categoryDescription());
+        assertEquals(responseCategoriesDTO.categories().get(1).id(), result.categories().get(1).id());
+        assertEquals(responseCategoriesDTO.categories().get(1).categoryName(), result.categories().get(1).categoryName());
+        assertEquals(responseCategoriesDTO.categories().get(1).categoryDescription(), result.categories().get(1).categoryDescription());
+        assertEquals(responseCategoriesDTO.categories().size(), result.categories().size());
+
+        verify(categoryRepository).getCategories(idUser);
+
     }
 
 
