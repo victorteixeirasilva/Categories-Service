@@ -28,4 +28,6 @@ public interface CategoryRepository {
     ResponseMessageDTO removeCategory(Category category);
 
     List<Category> getCategories(UUID idUser);
+
+    List<UUID> getObjectivesByCategory(UUID idCategory, UUID idUser);
 }

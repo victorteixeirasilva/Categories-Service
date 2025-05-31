@@ -273,5 +273,75 @@ public class CategoryServiceSuccessTest {
 
     }
 
+    @Test
+    public void getObjectivesByCategory() {
+        // Given
+        var idUser = UUID.randomUUID();
+        var idCategory = UUID.randomUUID();
 
+        List<UUID> objectivesUUIDs = new ArrayList<>();
+        objectivesUUIDs.add(UUID.randomUUID());
+        objectivesUUIDs.add(UUID.randomUUID());
+
+        List<ResponseObjectiveDTO> objectives = new ArrayList<>();
+        objectives.add(new ResponseObjectiveDTO(
+                objectivesUUIDs.get(0),
+                "nameObjective1",
+                "descriptionObjective1",
+                "String statusObjective1",
+                Date.valueOf("2022-01-01"),
+                idUser
+        ));
+        objectives.add(new ResponseObjectiveDTO(
+                objectivesUUIDs.get(1),
+                "nameObjective2",
+                "descriptionObjective2",
+                "String statusObjective2",
+                Date.valueOf("2022-01-01"),
+                idUser
+        ));
+
+        var category = new Category(
+                idCategory,
+                idUser,
+                "categoryName",
+                "categoryDescription",
+                objectivesUUIDs
+        );
+        ResponseObjectivesByCategory responseObjectivesByCategory = new ResponseObjectivesByCategory(
+                new ResponseCategoryDTO(category),
+                objectives
+        );
+
+        // When
+        when(categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser)).thenReturn(category);
+        when(categoryRepository.getObjectivesByCategory(idCategory, idUser)).thenReturn(objectivesUUIDs);
+        var result = categoryService.getObjectivesByCategory(idUser, idCategory);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(
+                responseObjectivesByCategory.category().id(),
+                result.category().id()
+        );
+        assertEquals(
+                responseObjectivesByCategory.category().categoryName(),
+                result.category().categoryName()
+        );
+        assertEquals(
+                responseObjectivesByCategory.category().categoryDescription(),
+                result.category().categoryDescription()
+        );
+        assertEquals(responseObjectivesByCategory.objectives().size(), result.objectives().size());
+        assertEquals(responseObjectivesByCategory.objectives().get(0).idObjective(), result.objectives().get(0).idObjective());
+        assertEquals(responseObjectivesByCategory.objectives().get(0).idUser(), result.objectives().get(0).idUser());
+        assertEquals(responseObjectivesByCategory.objectives().get(0).nameObjective(), result.objectives().get(0).nameObjective());
+        assertEquals(responseObjectivesByCategory.objectives().get(1).idObjective(), result.objectives().get(1).idObjective());
+        assertEquals(responseObjectivesByCategory.objectives().get(1).idUser(), result.objectives().get(1).idUser());
+        assertEquals(responseObjectivesByCategory.objectives().get(1).nameObjective(), result.objectives().get(1).nameObjective());
+
+
+        verify(categoryRepository).findCategoryByIdAndIdUser(idCategory, idUser);
+        verify(categoryRepository).getObjectivesByCategory(idCategory, idUser);
+    }
 }

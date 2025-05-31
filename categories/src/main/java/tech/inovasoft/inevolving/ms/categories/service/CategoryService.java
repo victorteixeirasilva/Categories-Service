@@ -122,7 +122,6 @@ public class CategoryService {
             UUID idUser,
             UUID idCategory
     ) {
-        //TODO: RED
         //TODO: GREEN
         //TODO: BLUE
         return null;
