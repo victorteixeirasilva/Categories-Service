@@ -71,21 +71,30 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         return new ResponseCategoryAndNewObjectiveDTO(category.get(), objective);
     }
 
+    /**
+     * @description - Find category by id | Encontra uma categoria pelo id
+     * @param id - category id | Id da categoria
+     * @param idUser - user id | Id do usuário
+     * @return - category | Categoria
+     * @throws DataBaseException - database error | Erro no banco de dados
+     * @throws NotFoundCategoryInDatabaseException - category not found in database | Categoria não encontrada no banco de dados
+     */
     @Override
     public Category findCategoryByIdAndIdUser(UUID id, UUID idUser) throws DataBaseException, NotFoundCategoryInDatabaseException {
         Optional<Category> category;
         try {
             category = categoryRepositoryJpa.findByIdAndIdUser(id, idUser);
         } catch (Exception e) {
+            //TODO: Desenvolver teste
             throw new DataBaseException("findById");
         }
 
         if (category.isEmpty()) {
+            //TODO: Desenvolver teste
             throw new NotFoundCategoryInDatabaseException();
         }
 
         return category.get();
-        //TODO: BLUE
     }
 
     @Override
