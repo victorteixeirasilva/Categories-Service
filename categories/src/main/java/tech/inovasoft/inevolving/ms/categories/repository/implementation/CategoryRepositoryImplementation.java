@@ -34,8 +34,10 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     }
 
     @Override
-    public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO requestDTO) {
-        //TODO: RED
+    public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(
+            UUID idUser,
+            RequestAddObjectiveToCategoryDTO requestDTO
+    ) {
         //TODO: GREEN
         //TODO: BLUE
         return null;
