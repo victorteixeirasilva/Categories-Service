@@ -281,7 +281,7 @@ public class CategoryServiceSuccessTest {
     }
 
     @Test
-    public void getObjectivesByCategory() {
+    public void getObjectivesByCategory() throws ErrorInExternalServiceException, DataBaseException {
         // Given
         var idUser = UUID.randomUUID();
         var idCategory = UUID.randomUUID();

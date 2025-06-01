@@ -134,7 +134,7 @@ public class CategoryService {
     public ResponseObjectivesByCategory getObjectivesByCategory(
             UUID idUser,
             UUID idCategory
-    ) {
+    ) throws ErrorInExternalServiceException, DataBaseException {
         var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
 
         var objectivesList = categoryRepository.getObjectivesByCategory(idCategory, idUser);
@@ -142,10 +142,23 @@ public class CategoryService {
         List<ResponseObjectiveDTO> objectives = new ArrayList<>();
 
         for (UUID id: objectivesList) {
-            var objective = objectiveService.getObjectiveById(id);
+            ResponseObjectiveDTO objective;
+            try {
+                //TODO ResponseEntity NOTFOUND
+                objective = objectiveService.getObjectiveById(id);
+            } catch (Exception e) {
+                //TODO: Desenvolver teste da falha, para quando não encontrar objetivo.
+                objectivesList.remove(id);
+                continue;
+            }
             objectives.add(objective);
         }
 
+        //TODO: Desenvolver teste da falha, para quando nao encontrar objetivos, tenho que testar, se está salvando sem o objetivo.
+        category.setObjectives(objectivesList);
+        categoryRepository.saveCategory(category);
+
         return new ResponseObjectivesByCategory(new ResponseCategoryDTO(category), objectives);
     }
+
 }

@@ -146,7 +146,7 @@ public class CategoryController {
     public CompletableFuture<ResponseEntity<ResponseObjectivesByCategory>> getCategories(
             @PathVariable("idUser") UUID idUser,
             @PathVariable("idCategory") UUID idCategory
-    ){
+    ) throws ErrorInExternalServiceException, DataBaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.getObjectivesByCategory(
                         idUser,
