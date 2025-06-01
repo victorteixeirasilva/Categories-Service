@@ -18,6 +18,12 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     @Autowired
     private CategoryRepositoryJpa categoryRepositoryJpa;
 
+    /**
+     * @description - Save category in database | Salva a categoria no banco de dados.
+     * @param newCategory - category to save | Categoria a ser salva.
+     * @return - category saved | Categoria salva.
+     * @throws DataBaseException - database error | Erro no banco de dados.
+     */
     @Override
     public Category saveCategory(Category newCategory) throws DataBaseException {
         try {
@@ -25,7 +31,6 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         } catch (Exception e) {
             throw new DataBaseException("save");
         }
-        //TODO: BLUE
     }
 
     @Override
