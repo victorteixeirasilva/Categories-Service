@@ -123,4 +123,25 @@ public class CategoryRepositorySuccessTest {
         verify(categoryRepositoryJpa).save(newCategory);
     }
 
+    @Test
+    public void findCategoryByIdAndIdUser() {
+        // Given
+        var idCategory = UUID.randomUUID();
+        var idUser = UUID.randomUUID();
+
+        var category = new Category(idCategory, idUser, "CategoryName", "CategoryDescription", new ArrayList<>());
+
+        // When
+        when(categoryRepositoryJpa.findByIdAndIdUser(idCategory, idUser)).thenReturn(Optional.of(category));
+        var result = categoryRepositoryImplementation.findCategoryByIdAndIdUser(idCategory, idUser);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(category.getId(), result.getId());
+        assertEquals(category.getIdUser(), result.getIdUser());
+        assertEquals(category.getCategoryName(), result.getCategoryName());
+
+        verify(categoryRepositoryJpa).findByIdAndIdUser(idCategory, idUser);
+    }
+
 }

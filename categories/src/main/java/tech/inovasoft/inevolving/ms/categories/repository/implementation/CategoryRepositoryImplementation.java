@@ -55,9 +55,10 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         var category = categoryRepositoryJpa.findById(requestDTO.idCategory()); //TODO: Refatorar para o metodo findCategoryByIdAndIdUser
         ResponseObjectiveDTO objective;
 
-        try {
+        try { // TODO: Refatorar para o metodo findObjectiveByIdAndIdUser
             objective = objectiveServiceClient.getObjectiveById(requestDTO.idObjective());
         } catch (Exception e) {
+            //TODO: Desenvolver teste
             throw new ErrorInExternalServiceException("objectiveServiceClient.getObjectiveById");
         }
 
@@ -70,7 +71,6 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
 
     @Override
     public Category findCategoryByIdAndIdUser(UUID id, UUID idUser) {
-        //TODO: RED
         //TODO: GREEN
         //TODO: BLUE
         return null;
