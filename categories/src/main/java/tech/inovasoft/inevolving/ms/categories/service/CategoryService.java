@@ -8,6 +8,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategor
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.*;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 import tech.inovasoft.inevolving.ms.categories.service.client.ObjectiveServiceClient;
@@ -48,7 +49,7 @@ public class CategoryService {
     public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(
             UUID idUser,
             RequestAddObjectiveToCategoryDTO dto
-    ) {
+    ) throws ErrorInExternalServiceException, DataBaseException {
         var category = categoryRepository.findCategoryByIdAndIdUser(dto.idCategory(), idUser);
 
         var objective = categoryRepository.findObjectiveByIdAndIdUser(dto.idObjective(), idUser);

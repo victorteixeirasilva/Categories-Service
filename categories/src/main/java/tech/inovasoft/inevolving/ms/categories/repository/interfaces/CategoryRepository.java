@@ -6,6 +6,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCateg
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface CategoryRepository {
 
     Category saveCategory(Category newCategory) throws DataBaseException;
 
-    ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO requestDTO);
+    ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO requestDTO) throws ErrorInExternalServiceException, DataBaseException;
 
     Category findCategoryByIdAndIdUser(UUID id, UUID idUser);
 

@@ -10,6 +10,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObje
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.implementation.CategoryRepositoryImplementation;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
@@ -63,7 +64,7 @@ public class CategoryRepositorySuccessTest {
     }
 
     @Test
-    public void addObjectiveToCategory() {
+    public void addObjectiveToCategory() throws ErrorInExternalServiceException, DataBaseException {
         // Given
         var idUser = UUID.randomUUID();
         var requestDTO = new RequestAddObjectiveToCategoryDTO(UUID.randomUUID(), UUID.randomUUID());

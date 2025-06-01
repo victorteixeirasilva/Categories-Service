@@ -14,6 +14,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCateg
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectivesByCategory;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.service.CategoryService;
 
@@ -53,7 +54,7 @@ public class CategoryController {
     public CompletableFuture<ResponseEntity<ResponseCategoryAndNewObjectiveDTO>> addObjectiveToCategory(
             @PathVariable("idUser") UUID idUser,
             @RequestBody RequestAddObjectiveToCategoryDTO dto
-    ){
+    ) throws ErrorInExternalServiceException, DataBaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.addObjectiveToCategory(
                         idUser,
