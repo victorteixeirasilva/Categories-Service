@@ -13,6 +13,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCateg
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectivesByCategory;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.service.CategoryService;
 
@@ -37,7 +38,7 @@ public class CategoryController {
     public CompletableFuture<ResponseEntity<Category>> addCategory(
             @PathVariable("idUser") UUID idUser,
             @RequestBody RequestCategoryDTO dto
-    ){
+    ) throws DataBaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.addCategory(idUser, dto)
         ));
@@ -109,7 +110,7 @@ public class CategoryController {
             @PathVariable("idUser") UUID idUser,
             @PathVariable("idCategory") UUID idCategory,
             @RequestBody RequestUpdateCategoryDTO dto
-    ){
+    ) throws DataBaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.updateCategory(
                         idUser,

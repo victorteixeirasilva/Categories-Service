@@ -7,6 +7,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObje
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.*;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 import tech.inovasoft.inevolving.ms.categories.service.client.ObjectiveServiceClient;
@@ -33,7 +34,7 @@ public class CategoryService {
     public Category addCategory(
             UUID idUser,
             RequestCategoryDTO dto
-    ) {
+    ) throws DataBaseException {
         var category = new Category(idUser, dto);
         return categoryRepository.saveCategory(category);
     }
@@ -100,7 +101,7 @@ public class CategoryService {
             UUID idUser,
             UUID idCategory,
             RequestUpdateCategoryDTO dto
-    ) {
+    ) throws DataBaseException {
         var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
 
         category.setCategoryName(dto.categoryName());

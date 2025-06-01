@@ -5,6 +5,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObje
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepositoryJpa;
@@ -18,10 +19,13 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     private CategoryRepositoryJpa categoryRepositoryJpa;
 
     @Override
-    public Category saveCategory(Category newCategory) {
-        //TODO: GREEN
+    public Category saveCategory(Category newCategory) throws DataBaseException {
+        try {
+            return categoryRepositoryJpa.save(newCategory);
+        } catch (Exception e) {
+            throw new DataBaseException("save");
+        }
         //TODO: BLUE
-        return null;
     }
 
     @Override
