@@ -13,8 +13,6 @@ import java.util.UUID;
 @Repository
 public interface CategoryRepository {
 
-    //TODO: Criar Implementação
-
     Category saveCategory(Category newCategory);
 
     ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO requestDTO);
@@ -30,4 +28,5 @@ public interface CategoryRepository {
     List<Category> getCategories(UUID idUser);
 
     List<UUID> getObjectivesByCategory(UUID idCategory, UUID idUser);
+
 }

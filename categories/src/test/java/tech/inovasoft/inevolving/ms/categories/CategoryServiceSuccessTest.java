@@ -321,8 +321,8 @@ public class CategoryServiceSuccessTest {
         // When
         when(categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser)).thenReturn(category);
         when(categoryRepository.getObjectivesByCategory(idCategory, idUser)).thenReturn(objectivesUUIDs);
-        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(0))).thenReturn(ResponseEntity.ok(objectives.get(0)));
-        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(1))).thenReturn(ResponseEntity.ok(objectives.get(1)));
+        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(0))).thenReturn(objectives.get(0));
+        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(1))).thenReturn(objectives.get(1));
         var result = categoryService.getObjectivesByCategory(idUser, idCategory);
 
         // Then

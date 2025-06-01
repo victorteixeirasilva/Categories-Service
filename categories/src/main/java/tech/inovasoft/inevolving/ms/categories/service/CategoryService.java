@@ -140,8 +140,7 @@ public class CategoryService {
         List<ResponseObjectiveDTO> objectives = new ArrayList<>();
 
         for (UUID id: objectivesList) {
-            var objectiveEntity = objectiveService.getObjectiveById(id);
-            ResponseObjectiveDTO objective = (ResponseObjectiveDTO) objectiveEntity.getBody();
+            var objective = objectiveService.getObjectiveById(id);
             objectives.add(objective);
         }
 
