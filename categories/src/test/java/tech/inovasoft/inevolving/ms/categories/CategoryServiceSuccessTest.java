@@ -13,6 +13,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateC
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.*;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategoryInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 import tech.inovasoft.inevolving.ms.categories.service.CategoryService;
@@ -81,7 +82,7 @@ public class CategoryServiceSuccessTest {
     }
 
     @Test
-    public void addObjectiveToCategory() throws ErrorInExternalServiceException, DataBaseException {
+    public void addObjectiveToCategory() throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException {
         // Given
         var idUser = UUID.randomUUID();
         var requestDTO = new RequestAddObjectiveToCategoryDTO(
@@ -134,7 +135,7 @@ public class CategoryServiceSuccessTest {
     }
 
     @Test
-    public void removeObjectiveToCategory() {
+    public void removeObjectiveToCategory() throws NotFoundCategoryInDatabaseException, DataBaseException {
         // Given
         var idUser = UUID.randomUUID();
         var idCategory = UUID.randomUUID();
@@ -160,7 +161,7 @@ public class CategoryServiceSuccessTest {
     }
 
     @Test
-    public void removeCategory() {
+    public void removeCategory() throws NotFoundCategoryInDatabaseException, DataBaseException {
         // Given
         var idUser = UUID.randomUUID();
         var idCategory = UUID.randomUUID();
@@ -182,7 +183,7 @@ public class CategoryServiceSuccessTest {
     }
 
     @Test
-    public void updateCategory() throws DataBaseException {
+    public void updateCategory() throws DataBaseException, NotFoundCategoryInDatabaseException {
         // Given
         var idUser = UUID.randomUUID();
         var idCategory = UUID.randomUUID();
@@ -281,7 +282,7 @@ public class CategoryServiceSuccessTest {
     }
 
     @Test
-    public void getObjectivesByCategory() throws ErrorInExternalServiceException, DataBaseException {
+    public void getObjectivesByCategory() throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException {
         // Given
         var idUser = UUID.randomUUID();
         var idCategory = UUID.randomUUID();

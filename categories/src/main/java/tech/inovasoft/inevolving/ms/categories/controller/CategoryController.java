@@ -15,6 +15,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessa
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectivesByCategory;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategoryInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.service.CategoryService;
 
@@ -54,7 +55,7 @@ public class CategoryController {
     public CompletableFuture<ResponseEntity<ResponseCategoryAndNewObjectiveDTO>> addObjectiveToCategory(
             @PathVariable("idUser") UUID idUser,
             @RequestBody RequestAddObjectiveToCategoryDTO dto
-    ) throws ErrorInExternalServiceException, DataBaseException {
+    ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.addObjectiveToCategory(
                         idUser,
@@ -73,7 +74,7 @@ public class CategoryController {
             @PathVariable("idUser") UUID idUser,
             @PathVariable("idCategory") UUID idCategory,
             @PathVariable("idObjective") UUID idObjective
-    ){
+    ) throws NotFoundCategoryInDatabaseException, DataBaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.removeObjectiveToCategory(
                         idUser,
@@ -92,7 +93,7 @@ public class CategoryController {
     public CompletableFuture<ResponseEntity<ResponseMessageDTO>> removeCategory(
             @PathVariable("idUser") UUID idUser,
             @PathVariable("idCategory") UUID idCategory
-    ){
+    ) throws NotFoundCategoryInDatabaseException, DataBaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.removeCategory(
                         idUser,
@@ -111,7 +112,7 @@ public class CategoryController {
             @PathVariable("idUser") UUID idUser,
             @PathVariable("idCategory") UUID idCategory,
             @RequestBody RequestUpdateCategoryDTO dto
-    ) throws DataBaseException {
+    ) throws DataBaseException, NotFoundCategoryInDatabaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.updateCategory(
                         idUser,
@@ -146,9 +147,10 @@ public class CategoryController {
     public CompletableFuture<ResponseEntity<ResponseObjectivesByCategory>> getCategories(
             @PathVariable("idUser") UUID idUser,
             @PathVariable("idCategory") UUID idCategory
-    ) throws ErrorInExternalServiceException, DataBaseException {
+    ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
-                categoryService.getObjectivesByCategory(
+                categoryService.getObjectivesByCategory
+                        (
                         idUser,
                         idCategory
                 ))

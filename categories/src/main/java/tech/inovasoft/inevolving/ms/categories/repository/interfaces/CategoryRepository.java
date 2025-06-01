@@ -7,6 +7,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessa
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategoryInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface CategoryRepository {
 
     ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO requestDTO) throws ErrorInExternalServiceException, DataBaseException;
 
-    Category findCategoryByIdAndIdUser(UUID id, UUID idUser);
+    Category findCategoryByIdAndIdUser(UUID id, UUID idUser) throws DataBaseException, NotFoundCategoryInDatabaseException;
 
     ResponseObjectiveDTO findObjectiveByIdAndIdUser(UUID uuid, UUID idUser);
 

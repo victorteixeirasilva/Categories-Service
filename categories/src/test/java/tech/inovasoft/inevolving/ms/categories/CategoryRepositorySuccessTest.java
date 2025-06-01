@@ -11,6 +11,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCateg
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategoryInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.implementation.CategoryRepositoryImplementation;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
@@ -124,7 +125,7 @@ public class CategoryRepositorySuccessTest {
     }
 
     @Test
-    public void findCategoryByIdAndIdUser() {
+    public void findCategoryByIdAndIdUser() throws NotFoundCategoryInDatabaseException, DataBaseException {
         // Given
         var idCategory = UUID.randomUUID();
         var idUser = UUID.randomUUID();
