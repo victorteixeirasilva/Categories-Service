@@ -258,4 +258,29 @@ public class CategoryRepositorySuccessTest {
         verify(categoryRepositoryJpa).findAllByIdUser(idUser);
     }
 
+    @Test
+    public void getObjectivesByCategory() {
+        // Given
+        var idCategory = UUID.randomUUID();
+        var idUser = UUID.randomUUID();
+        var expectedCategory = new Category(
+                idCategory,
+                idUser,
+                "CategoryName",
+                "CategoryDescription",
+                List.of(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID())
+        );
+
+        // When
+        when(categoryRepositoryJpa.findByIdAndIdUser(idCategory, idUser)).thenReturn(Optional.of(expectedCategory));
+        var result = categoryRepositoryImplementation
+                .getObjectivesByCategory(idCategory, idUser);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(expectedCategory.getObjectives().size(), result.size());
+
+        verify(categoryRepositoryJpa).findByIdAndIdUser(idCategory, idUser);
+    }
+
 }
