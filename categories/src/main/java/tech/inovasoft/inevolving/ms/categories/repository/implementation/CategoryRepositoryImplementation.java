@@ -189,8 +189,20 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         }
     }
 
+    /**
+     * @description - Get categories by user id | Obtém as categorias pelo id do usuário
+     * @param idUser - user id | Id do usuário
+     * @return - categories | Categorias
+     * @throws NotFoundCategoryInDatabaseException - category not found in database | Categoria não encontrada no banco de dados
+     * @throws DataBaseException - database error | Erro no banco de dados
+     */
     @Override
-    public List<Category> getCategories(UUID idUser) throws NotFoundCategoryInDatabaseException, DataBaseException {
+    public List<Category> getCategories(
+            UUID idUser
+    ) throws
+            NotFoundCategoryInDatabaseException,
+            DataBaseException
+    {
         List<Category> categories;
         try {
             categories = categoryRepositoryJpa.findAllByIdUser(idUser);
@@ -201,7 +213,6 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
             throw new NotFoundCategoryInDatabaseException();
         }
         return categories;
-        //TODO: BLUE
     }
 
     @Override
