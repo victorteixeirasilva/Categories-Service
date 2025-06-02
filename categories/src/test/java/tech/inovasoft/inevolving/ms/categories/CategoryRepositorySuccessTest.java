@@ -206,7 +206,7 @@ public class CategoryRepositorySuccessTest {
     }
 
     @Test
-    public void removeCategory() {
+    public void removeCategory() throws DataBaseException {
         // Given
         var category = new Category(
                 UUID.randomUUID(),

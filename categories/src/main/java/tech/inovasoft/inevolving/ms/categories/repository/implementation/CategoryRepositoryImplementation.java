@@ -168,11 +168,21 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         return new ResponseMessageDTO("Objective removed from category successfully");
     }
 
+    /**
+     * @description - Remove category | Remove uma categoria
+     * @param category - category to remove | Categoria a ser removida
+     * @return - response with message | Resposta com a mensagem
+     * @throws DataBaseException - database error | Erro no banco de dados
+     */
     @Override
-    public ResponseMessageDTO removeCategory(Category category) {
-        //TODO: GREEN
-        //TODO: BLUE
-        return null;
+    public ResponseMessageDTO removeCategory(Category category) throws DataBaseException {
+        try {
+            categoryRepositoryJpa.delete(category);
+            return new ResponseMessageDTO("Category removed successfully");
+        } catch (Exception e) {
+            //TODO: Desenvolver teste
+            throw new DataBaseException("delete");
+        }
     }
 
     @Override
