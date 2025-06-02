@@ -27,8 +27,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CategoryRepositorySuccessTest {
@@ -204,6 +203,28 @@ public class CategoryRepositorySuccessTest {
 
         verify(categoryRepositoryJpa).findByIdAndIdUser(idCategory, idUser);
         verify(categoryRepositoryJpa).save(expectedCategory);
+    }
+
+    @Test
+    public void removeCategory() {
+        // Given
+        var category = new Category(
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                "CategoryName",
+                "CategoryDescription",
+                List.of(UUID.randomUUID())
+        );
+
+        // When
+        doNothing().when(categoryRepositoryJpa).delete(category);
+        var result = categoryRepositoryImplementation.removeCategory(category);
+
+        // Then
+        assertNotNull(result);
+        assertEquals("Category removed successfully", result.message());
+
+        verify(categoryRepositoryJpa).delete(category);
     }
 
 }

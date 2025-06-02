@@ -170,7 +170,6 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
 
     @Override
     public ResponseMessageDTO removeCategory(Category category) {
-        //TODO: RED
         //TODO: GREEN
         //TODO: BLUE
         return null;
