@@ -175,7 +175,11 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
      * @throws DataBaseException - database error | Erro no banco de dados
      */
     @Override
-    public ResponseMessageDTO removeCategory(Category category) throws DataBaseException {
+    public ResponseMessageDTO removeCategory(
+            Category category
+    ) throws
+            DataBaseException
+    {
         try {
             categoryRepositoryJpa.delete(category);
             return new ResponseMessageDTO("Category removed successfully");
@@ -187,7 +191,6 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
 
     @Override
     public List<Category> getCategories(UUID idUser) {
-        //TODO: RED
         //TODO: GREEN
         //TODO: BLUE
         return List.of();

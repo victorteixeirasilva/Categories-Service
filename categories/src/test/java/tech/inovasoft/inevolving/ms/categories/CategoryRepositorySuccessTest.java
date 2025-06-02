@@ -227,4 +227,35 @@ public class CategoryRepositorySuccessTest {
         verify(categoryRepositoryJpa).delete(category);
     }
 
+    @Test
+    public void getCategories() {
+        // Given
+        var idUser = UUID.randomUUID();
+        List<Category> categories = new ArrayList<>();
+        categories.add(new Category(
+                UUID.randomUUID(),
+                idUser,
+                "CategoryName",
+                "CategoryDescription",
+                List.of(UUID.randomUUID())
+        ));
+        categories.add(new Category(
+                UUID.randomUUID(),
+                idUser,
+                "CategoryName",
+                "CategoryDescription",
+                List.of(UUID.randomUUID())
+        ));
+
+        // When
+        when(categoryRepositoryJpa.findAllByIdUser(idUser)).thenReturn(categories);
+        var result = categoryRepositoryImplementation.getCategories(idUser);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(categories.size(), result.size());
+
+        verify(categoryRepositoryJpa).findAllByIdUser(idUser);
+    }
+
 }

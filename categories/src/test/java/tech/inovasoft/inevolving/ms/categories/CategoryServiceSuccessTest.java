@@ -283,7 +283,7 @@ public class CategoryServiceSuccessTest {
     }
 
     @Test
-    public void getObjectivesByCategory() throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException {
+    public void getObjectivesByCategory() throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException, NotFoundObjectiveInDatabaseException {
         // Given
         var idUser = UUID.randomUUID();
         var idCategory = UUID.randomUUID();
@@ -325,8 +325,8 @@ public class CategoryServiceSuccessTest {
         // When
         when(categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser)).thenReturn(category);
         when(categoryRepository.getObjectivesByCategory(idCategory, idUser)).thenReturn(objectivesUUIDs);
-        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(0), idUser)).thenReturn(ResponseEntity.ok(objectives.get(0)));
-        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(1), idUser)).thenReturn(ResponseEntity.ok(objectives.get(1)));
+        when(categoryRepository.findObjectiveByIdAndIdUser(objectivesUUIDs.get(0), idUser)).thenReturn(objectives.get(0));
+        when(categoryRepository.findObjectiveByIdAndIdUser(objectivesUUIDs.get(1), idUser)).thenReturn(objectives.get(1));
         var result = categoryService.getObjectivesByCategory(idUser, idCategory);
 
         // Then
