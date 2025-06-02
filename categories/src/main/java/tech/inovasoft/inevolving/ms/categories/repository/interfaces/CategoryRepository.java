@@ -31,6 +31,6 @@ public interface CategoryRepository {
 
     List<Category> getCategories(UUID idUser) throws NotFoundCategoryInDatabaseException, DataBaseException;
 
-    List<UUID> getObjectivesByCategory(UUID idCategory, UUID idUser);
+    List<UUID> getObjectivesByCategory(UUID idCategory, UUID idUser) throws NotFoundCategoryInDatabaseException, DataBaseException, NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException;
 
 }

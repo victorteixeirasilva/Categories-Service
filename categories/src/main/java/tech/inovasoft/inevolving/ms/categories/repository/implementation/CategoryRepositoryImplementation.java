@@ -218,9 +218,22 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     }
 
     @Override
-    public List<UUID> getObjectivesByCategory(UUID idCategory, UUID idUser) {
-        //TODO: GREEN
+    public List<UUID> getObjectivesByCategory(UUID idCategory, UUID idUser) throws NotFoundCategoryInDatabaseException, DataBaseException, NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException {
+        var category = findCategoryByIdAndIdUser(idCategory, idUser);
+        List<UUID> objectives = new ArrayList<>(category.getObjectives());
+
+        for (UUID id : category.getObjectives()) {
+            try {
+                var objective = findObjectiveByIdAndIdUser(id, idUser);
+            } catch (NotFoundObjectiveInDatabaseException e) {
+                objectives.remove(id);
+            }
+        }
+
+        category.setObjectives(objectives);
+        saveCategory(category);
+
+        return objectives;
         //TODO: BLUE
-        return List.of();
     }
 }

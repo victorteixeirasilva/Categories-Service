@@ -259,7 +259,7 @@ public class CategoryRepositorySuccessTest {
     }
 
     @Test
-    public void getObjectivesByCategory() {
+    public void getObjectivesByCategory() throws NotFoundCategoryInDatabaseException, DataBaseException, NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException {
         // Given
         var idCategory = UUID.randomUUID();
         var idUser = UUID.randomUUID();
@@ -273,6 +273,8 @@ public class CategoryRepositorySuccessTest {
 
         // When
         when(categoryRepositoryJpa.findByIdAndIdUser(idCategory, idUser)).thenReturn(Optional.of(expectedCategory));
+        ResponseObjectiveDTO mockObjective = new ResponseObjectiveDTO(UUID.randomUUID(), "ObjectiveName", "ObjectiveDescription", "status", null, idUser);
+        when(objectiveServiceClient.getObjectiveById(any(UUID.class), any(UUID.class))).thenReturn(ResponseEntity.ok(mockObjective));
         var result = categoryRepositoryImplementation
                 .getObjectivesByCategory(idCategory, idUser);
 

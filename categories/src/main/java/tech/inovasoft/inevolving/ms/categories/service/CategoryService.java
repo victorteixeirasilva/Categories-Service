@@ -136,7 +136,7 @@ public class CategoryService {
     public ResponseObjectivesByCategory getObjectivesByCategory(
             UUID idUser,
             UUID idCategory
-    ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException {
+    ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException, NotFoundObjectiveInDatabaseException {
         var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
 
         var objectivesList = categoryRepository.getObjectivesByCategory(idCategory, idUser);
