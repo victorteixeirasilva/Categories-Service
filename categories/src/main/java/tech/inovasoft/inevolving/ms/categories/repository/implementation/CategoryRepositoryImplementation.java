@@ -141,6 +141,15 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         return entity.getBody();
     }
 
+    /**
+     * @description - Remove objective from category | Remove um objetivo de uma categoria
+     * @param idObjective - objective id | Id do objetivo
+     * @param idCategory - category id | Id da categoria
+     * @param idUser - user id | Id do usuário
+     * @return - response with message | Resposta com a mensagem
+     * @throws NotFoundCategoryInDatabaseException - category not found in database | Categoria não encontrada no banco de dados
+     * @throws DataBaseException - database error | Erro no banco de dados
+     */
     @Override
     public ResponseMessageDTO removeObjectiveToCategory(
             UUID idObjective,
@@ -155,8 +164,8 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         objectives.remove(idObjective);
         category.setObjectives(objectives);
         saveCategory(category);
+
         return new ResponseMessageDTO("Objective removed from category successfully");
-        //TODO: BLUE
     }
 
     @Override
