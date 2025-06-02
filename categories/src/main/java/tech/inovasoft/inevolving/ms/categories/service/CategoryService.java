@@ -75,7 +75,7 @@ public class CategoryService {
 
         var objective = categoryRepository.findObjectiveByIdAndIdUser(idObjective, idUser);
 
-        return categoryRepository.removeObjectiveToCategory(idObjective, idCategory);
+        return categoryRepository.removeObjectiveToCategory(idObjective, idCategory, idUser);
     }
 
     /**

@@ -149,7 +149,7 @@ public class CategoryServiceSuccessTest {
         // When
         when(categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser)).thenReturn(category);
         when(categoryRepository.findObjectiveByIdAndIdUser(idObjective, idUser)).thenReturn(objective);
-        when(categoryRepository.removeObjectiveToCategory(idObjective, idCategory)).thenReturn(new ResponseMessageDTO("Objective removed successfully"));
+        when(categoryRepository.removeObjectiveToCategory(idObjective, idCategory, idUser)).thenReturn(new ResponseMessageDTO("Objective removed successfully"));
         var result = categoryService.removeObjectiveToCategory(idUser, idCategory, idObjective);
 
         // Then
@@ -158,7 +158,7 @@ public class CategoryServiceSuccessTest {
 
         verify(categoryRepository).findCategoryByIdAndIdUser(idCategory, idUser);
         verify(categoryRepository).findObjectiveByIdAndIdUser(idObjective, idUser);
-        verify(categoryRepository).removeObjectiveToCategory(idObjective, idCategory);
+        verify(categoryRepository).removeObjectiveToCategory(idObjective, idCategory, idUser);
     }
 
     @Test

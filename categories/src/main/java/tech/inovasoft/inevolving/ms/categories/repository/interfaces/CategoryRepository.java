@@ -25,7 +25,7 @@ public interface CategoryRepository {
 
     ResponseObjectiveDTO findObjectiveByIdAndIdUser(UUID uuid, UUID idUser) throws ErrorInExternalServiceException, NotFoundObjectiveInDatabaseException;
 
-    ResponseMessageDTO removeObjectiveToCategory(UUID idObjective, UUID idCategory);
+    ResponseMessageDTO removeObjectiveToCategory(UUID idObjective, UUID idCategory, UUID idUser) throws NotFoundCategoryInDatabaseException, DataBaseException;
 
     ResponseMessageDTO removeCategory(Category category);
 

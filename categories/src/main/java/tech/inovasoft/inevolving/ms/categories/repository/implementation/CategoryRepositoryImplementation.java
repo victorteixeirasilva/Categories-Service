@@ -16,6 +16,7 @@ import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRep
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepositoryJpa;
 import tech.inovasoft.inevolving.ms.categories.service.client.ObjectiveServiceClient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -97,7 +98,7 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
             category = categoryRepositoryJpa.findByIdAndIdUser(id, idUser);
         } catch (Exception e) {
             //TODO: Desenvolver teste
-            throw new DataBaseException("findById");
+            throw new DataBaseException("findByIdAndIdUser");
         }
 
         if (category.isEmpty()) {
@@ -143,11 +144,19 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     @Override
     public ResponseMessageDTO removeObjectiveToCategory(
             UUID idObjective,
-            UUID idCategory
-    ) {
-        //TODO: GREEN
+            UUID idCategory,
+            UUID idUser
+    ) throws
+            NotFoundCategoryInDatabaseException,
+            DataBaseException
+    {
+        var category = findCategoryByIdAndIdUser(idCategory, idUser);
+        List<UUID> objectives = new ArrayList<>(category.getObjectives());
+        objectives.remove(idObjective);
+        category.setObjectives(objectives);
+        saveCategory(category);
+        return new ResponseMessageDTO("Objective removed from category successfully");
         //TODO: BLUE
-        return null;
     }
 
     @Override

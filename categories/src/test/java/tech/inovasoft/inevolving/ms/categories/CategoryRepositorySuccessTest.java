@@ -172,7 +172,7 @@ public class CategoryRepositorySuccessTest {
     }
 
     @Test
-    public void removeObjectiveToCategory() throws NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException {
+    public void removeObjectiveToCategory() throws NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException, NotFoundCategoryInDatabaseException, DataBaseException {
        // Given
         var idObjective = UUID.randomUUID();
         var idCategory = UUID.randomUUID();
@@ -193,29 +193,16 @@ public class CategoryRepositorySuccessTest {
         );
 
        // When
-        when(objectiveServiceClient.getObjectiveById(
-                idObjective,
-                idUser
-        )).thenReturn(ResponseEntity.ok(
-                new ResponseObjectiveDTO(
-                        idObjective,
-                        "ObjectiveName",
-                        "ObjectiveDescription",
-                        "status",
-                        null,
-                        idUser
-                )
-        ));
+        when(categoryRepositoryJpa.findByIdAndIdUser(idCategory, idUser)).thenReturn(Optional.of(oldCategory));
         when(categoryRepositoryJpa.save(expectedCategory)).thenReturn(expectedCategory);
         var result = categoryRepositoryImplementation
-                .removeObjectiveToCategory(idObjective, idCategory);
+                .removeObjectiveToCategory(idObjective, idCategory, idUser);
 
         // Then
         assertNotNull(result);
-        assertEquals("Objective remove successfully", result.message());
+        assertEquals("Objective removed from category successfully", result.message());
 
-        verify(categoryRepositoryImplementation)
-                .findObjectiveByIdAndIdUser(idObjective, idUser);
+        verify(categoryRepositoryJpa).findByIdAndIdUser(idCategory, idUser);
         verify(categoryRepositoryJpa).save(expectedCategory);
     }
 
