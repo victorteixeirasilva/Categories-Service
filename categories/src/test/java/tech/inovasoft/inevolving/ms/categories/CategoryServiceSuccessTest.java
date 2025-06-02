@@ -226,7 +226,7 @@ public class CategoryServiceSuccessTest {
     }
 
     @Test
-    public void getCategories() {
+    public void getCategories() throws NotFoundCategoryInDatabaseException, DataBaseException {
         // Given
         var idUser = UUID.randomUUID();
         List<ResponseCategoryDTO> categories = new ArrayList<>();

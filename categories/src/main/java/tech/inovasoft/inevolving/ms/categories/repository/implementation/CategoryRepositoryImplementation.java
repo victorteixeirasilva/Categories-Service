@@ -190,10 +190,18 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     }
 
     @Override
-    public List<Category> getCategories(UUID idUser) {
-        //TODO: GREEN
+    public List<Category> getCategories(UUID idUser) throws NotFoundCategoryInDatabaseException, DataBaseException {
+        List<Category> categories;
+        try {
+            categories = categoryRepositoryJpa.findAllByIdUser(idUser);
+        } catch (Exception e) {
+            throw new DataBaseException("findAllByIdUser");
+        }
+        if (categories.isEmpty()) {
+            throw new NotFoundCategoryInDatabaseException();
+        }
+        return categories;
         //TODO: BLUE
-        return List.of();
     }
 
     @Override

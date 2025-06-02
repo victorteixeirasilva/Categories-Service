@@ -131,7 +131,7 @@ public class CategoryController {
     @GetMapping("/{idUser}")
     public CompletableFuture<ResponseEntity<ResponseCategoriesDTO>> getCategories(
             @PathVariable("idUser") UUID idUser
-    ){
+    ) throws NotFoundCategoryInDatabaseException, DataBaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.getCategories(
                         idUser

@@ -120,7 +120,7 @@ public class CategoryService {
      */
     public ResponseCategoriesDTO getCategories(
             UUID idUser
-    ) {
+    ) throws NotFoundCategoryInDatabaseException, DataBaseException {
         var categoriesList = categoryRepository.getCategories(idUser);
         List<ResponseCategoryDTO> categories = categoriesList.stream().map(ResponseCategoryDTO::new).toList();
 
