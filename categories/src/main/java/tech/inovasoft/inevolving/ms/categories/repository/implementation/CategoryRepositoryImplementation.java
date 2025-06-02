@@ -35,7 +35,11 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
      * @throws DataBaseException - database error | Erro no banco de dados.
      */
     @Override
-    public Category saveCategory(Category newCategory) throws DataBaseException {
+    public Category saveCategory(
+            Category newCategory
+    ) throws
+            DataBaseException
+    {
         try {
             return categoryRepositoryJpa.save(newCategory);
         } catch (Exception e) {
@@ -56,7 +60,11 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(
             UUID idUser,
             RequestAddObjectiveToCategoryDTO requestDTO
-    ) throws ErrorInExternalServiceException, DataBaseException, NotFoundObjectiveInDatabaseException {
+    ) throws
+            ErrorInExternalServiceException,
+            DataBaseException,
+            NotFoundObjectiveInDatabaseException
+    {
         var category = categoryRepositoryJpa.findById(requestDTO.idCategory()); //TODO: Refatorar para o metodo findCategoryByIdAndIdUser
 
         ResponseObjectiveDTO objective = findObjectiveByIdAndIdUser(requestDTO.idObjective(), idUser);
@@ -80,7 +88,10 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     public Category findCategoryByIdAndIdUser(
             UUID id,
             UUID idUser
-    ) throws DataBaseException, NotFoundCategoryInDatabaseException {
+    ) throws
+            DataBaseException,
+            NotFoundCategoryInDatabaseException
+    {
         Optional<Category> category;
         try {
             category = categoryRepositoryJpa.findByIdAndIdUser(id, idUser);
@@ -106,8 +117,14 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
      * @throws NotFoundObjectiveInDatabaseException - objective not found in database | Objetivo não encontrado no banco de dados
      */
     @Override
-    public ResponseObjectiveDTO findObjectiveByIdAndIdUser(UUID uuid, UUID idUser) throws ErrorInExternalServiceException, NotFoundObjectiveInDatabaseException {
-        ResponseEntity entity;
+    public ResponseObjectiveDTO findObjectiveByIdAndIdUser(
+            UUID uuid,
+            UUID idUser
+    ) throws
+            ErrorInExternalServiceException,
+            NotFoundObjectiveInDatabaseException
+    {
+        ResponseEntity<ResponseObjectiveDTO> entity;
         try {
             entity = objectiveServiceClient.getObjectiveById(uuid, idUser);
         } catch (Exception e) {
@@ -120,12 +137,14 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
             throw new NotFoundObjectiveInDatabaseException();
         }
 
-        return (ResponseObjectiveDTO) entity.getBody();
+        return entity.getBody();
     }
 
     @Override
-    public ResponseMessageDTO removeObjectiveToCategory(UUID idObjective, UUID idCategory) {
-        //TODO: RED
+    public ResponseMessageDTO removeObjectiveToCategory(
+            UUID idObjective,
+            UUID idCategory
+    ) {
         //TODO: GREEN
         //TODO: BLUE
         return null;

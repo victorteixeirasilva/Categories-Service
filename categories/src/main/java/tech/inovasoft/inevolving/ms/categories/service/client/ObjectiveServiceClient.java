@@ -13,6 +13,6 @@ import java.util.concurrent.CompletableFuture;
 public interface ObjectiveServiceClient {
     // TODO: Testar
     @GetMapping("/{idObjective}/{idUser}")
-    ResponseEntity getObjectiveById(@PathVariable UUID idObjective, @PathVariable UUID idUser);
+    ResponseEntity<ResponseObjectiveDTO> getObjectiveById(@PathVariable UUID idObjective, @PathVariable UUID idUser);
 
 }
