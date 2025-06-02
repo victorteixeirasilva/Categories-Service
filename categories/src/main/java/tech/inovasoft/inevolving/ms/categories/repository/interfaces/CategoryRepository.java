@@ -8,6 +8,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjec
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategoryInDatabaseException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundObjectiveInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 
 import java.util.List;
@@ -18,11 +19,11 @@ public interface CategoryRepository {
 
     Category saveCategory(Category newCategory) throws DataBaseException;
 
-    ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO requestDTO) throws ErrorInExternalServiceException, DataBaseException;
+    ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO requestDTO) throws ErrorInExternalServiceException, DataBaseException, NotFoundObjectiveInDatabaseException;
 
     Category findCategoryByIdAndIdUser(UUID id, UUID idUser) throws DataBaseException, NotFoundCategoryInDatabaseException;
 
-    ResponseObjectiveDTO findObjectiveByIdAndIdUser(UUID uuid, UUID idUser);
+    ResponseObjectiveDTO findObjectiveByIdAndIdUser(UUID uuid, UUID idUser) throws ErrorInExternalServiceException, NotFoundObjectiveInDatabaseException;
 
     ResponseMessageDTO removeObjectiveToCategory(UUID idObjective, UUID idCategory);
 

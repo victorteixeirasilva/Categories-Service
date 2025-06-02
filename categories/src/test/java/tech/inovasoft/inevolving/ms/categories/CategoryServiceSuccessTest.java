@@ -14,6 +14,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.*;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategoryInDatabaseException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundObjectiveInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 import tech.inovasoft.inevolving.ms.categories.service.CategoryService;
@@ -82,7 +83,7 @@ public class CategoryServiceSuccessTest {
     }
 
     @Test
-    public void addObjectiveToCategory() throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException {
+    public void addObjectiveToCategory() throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException, NotFoundObjectiveInDatabaseException {
         // Given
         var idUser = UUID.randomUUID();
         var requestDTO = new RequestAddObjectiveToCategoryDTO(
@@ -135,7 +136,7 @@ public class CategoryServiceSuccessTest {
     }
 
     @Test
-    public void removeObjectiveToCategory() throws NotFoundCategoryInDatabaseException, DataBaseException {
+    public void removeObjectiveToCategory() throws NotFoundCategoryInDatabaseException, DataBaseException, ErrorInExternalServiceException, NotFoundObjectiveInDatabaseException {
         // Given
         var idUser = UUID.randomUUID();
         var idCategory = UUID.randomUUID();
@@ -324,8 +325,8 @@ public class CategoryServiceSuccessTest {
         // When
         when(categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser)).thenReturn(category);
         when(categoryRepository.getObjectivesByCategory(idCategory, idUser)).thenReturn(objectivesUUIDs);
-        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(0))).thenReturn(objectives.get(0));
-        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(1))).thenReturn(objectives.get(1));
+        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(0), idUser)).thenReturn(ResponseEntity.ok(objectives.get(0)));
+        when(objectiveServiceClient.getObjectiveById(objectivesUUIDs.get(1), idUser)).thenReturn(ResponseEntity.ok(objectives.get(1)));
         var result = categoryService.getObjectivesByCategory(idUser, idCategory);
 
         // Then

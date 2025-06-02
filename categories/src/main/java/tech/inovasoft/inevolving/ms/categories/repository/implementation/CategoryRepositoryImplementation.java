@@ -1,6 +1,8 @@
 package tech.inovasoft.inevolving.ms.categories.repository.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
@@ -8,6 +10,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjec
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategoryInDatabaseException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundObjectiveInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepositoryJpa;
@@ -53,16 +56,10 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(
             UUID idUser,
             RequestAddObjectiveToCategoryDTO requestDTO
-    ) throws ErrorInExternalServiceException, DataBaseException {
+    ) throws ErrorInExternalServiceException, DataBaseException, NotFoundObjectiveInDatabaseException {
         var category = categoryRepositoryJpa.findById(requestDTO.idCategory()); //TODO: Refatorar para o metodo findCategoryByIdAndIdUser
-        ResponseObjectiveDTO objective;
 
-        try { // TODO: Refatorar para o metodo findObjectiveByIdAndIdUser
-            objective = objectiveServiceClient.getObjectiveById(requestDTO.idObjective());
-        } catch (Exception e) {
-            //TODO: Desenvolver teste
-            throw new ErrorInExternalServiceException("objectiveServiceClient.getObjectiveById");
-        }
+        ResponseObjectiveDTO objective = findObjectiveByIdAndIdUser(requestDTO.idObjective(), idUser);
 
         category.get().getObjectives().add(objective.idObjective());
 
@@ -80,7 +77,10 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
      * @throws NotFoundCategoryInDatabaseException - category not found in database | Categoria não encontrada no banco de dados
      */
     @Override
-    public Category findCategoryByIdAndIdUser(UUID id, UUID idUser) throws DataBaseException, NotFoundCategoryInDatabaseException {
+    public Category findCategoryByIdAndIdUser(
+            UUID id,
+            UUID idUser
+    ) throws DataBaseException, NotFoundCategoryInDatabaseException {
         Optional<Category> category;
         try {
             category = categoryRepositoryJpa.findByIdAndIdUser(id, idUser);
@@ -98,8 +98,17 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     }
 
     @Override
-    public ResponseObjectiveDTO findObjectiveByIdAndIdUser(UUID uuid, UUID idUser) {
-        //TODO: RED
+    public ResponseObjectiveDTO findObjectiveByIdAndIdUser(UUID uuid, UUID idUser) throws ErrorInExternalServiceException, NotFoundObjectiveInDatabaseException {
+        ResponseEntity entity;
+        try {
+            entity = objectiveServiceClient.getObjectiveById(uuid, idUser);
+        } catch (Exception e) {
+            //TODO: Desenvolver teste
+            throw new ErrorInExternalServiceException("objectiveServiceClient.getObjectiveById");
+        }
+        if (entity.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+            throw new NotFoundObjectiveInDatabaseException();
+        }
         //TODO: GREEN
         //TODO: BLUE
         return null;

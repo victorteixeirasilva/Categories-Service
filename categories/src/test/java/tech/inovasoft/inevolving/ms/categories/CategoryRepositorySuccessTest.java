@@ -6,12 +6,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategoryInDatabaseException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundObjectiveInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.implementation.CategoryRepositoryImplementation;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
@@ -65,7 +67,7 @@ public class CategoryRepositorySuccessTest {
     }
 
     @Test
-    public void addObjectiveToCategory() throws ErrorInExternalServiceException, DataBaseException {
+    public void addObjectiveToCategory() throws ErrorInExternalServiceException, DataBaseException, NotFoundObjectiveInDatabaseException {
         // Given
         var idUser = UUID.randomUUID();
         var requestDTO = new RequestAddObjectiveToCategoryDTO(UUID.randomUUID(), UUID.randomUUID());
@@ -103,7 +105,7 @@ public class CategoryRepositorySuccessTest {
 
         // When
         when(categoryRepositoryJpa.findById(requestDTO.idCategory())).thenReturn(Optional.of(oldCategory));
-        when(objectiveServiceClient.getObjectiveById(requestDTO.idObjective())).thenReturn(objective);
+        when(objectiveServiceClient.getObjectiveById(requestDTO.idObjective(), idUser)).thenReturn(ResponseEntity.ok(objective));
         when(categoryRepositoryJpa.save(newCategory)).thenReturn(newCategory);
         var result = categoryRepositoryImplementation.addObjectiveToCategory(idUser, requestDTO);
 
@@ -120,7 +122,7 @@ public class CategoryRepositorySuccessTest {
         assertEquals(expectedDTO.objective().descriptionObjective(), result.objective().descriptionObjective());
 
         verify(categoryRepositoryJpa).findById(requestDTO.idCategory());
-        verify(objectiveServiceClient).getObjectiveById(requestDTO.idObjective());
+        verify(objectiveServiceClient).getObjectiveById(requestDTO.idObjective(), idUser);
         verify(categoryRepositoryJpa).save(newCategory);
     }
 
@@ -143,6 +145,30 @@ public class CategoryRepositorySuccessTest {
         assertEquals(category.getCategoryName(), result.getCategoryName());
 
         verify(categoryRepositoryJpa).findByIdAndIdUser(idCategory, idUser);
+    }
+
+    @Test
+    public void findObjectiveByIdAndIdUser() throws NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException {
+        // Given
+        var idObjective = UUID.randomUUID();
+        var idUser = UUID.randomUUID();
+        ResponseEntity<ResponseObjectiveDTO> response = ResponseEntity.ok(new ResponseObjectiveDTO(idObjective, "ObjectiveName", "ObjectiveDescription", "status", null, idUser));
+        var expectedObjective = response.getBody();
+
+        // When
+        when(objectiveServiceClient.getObjectiveById(idObjective, idUser)).thenReturn(response);
+        var result = categoryRepositoryImplementation.findObjectiveByIdAndIdUser(idObjective, idUser);
+
+        // Then
+        assertNotNull(result);
+
+        assert expectedObjective != null;
+        assertEquals(expectedObjective.idObjective(), result.idObjective());
+        assertEquals(expectedObjective.idUser(), result.idUser());
+        assertEquals(expectedObjective.nameObjective(), result.nameObjective());
+        assertEquals(expectedObjective.descriptionObjective(), result.descriptionObjective());
+
+        verify(objectiveServiceClient).getObjectiveById(idObjective, idUser);
     }
 
 }

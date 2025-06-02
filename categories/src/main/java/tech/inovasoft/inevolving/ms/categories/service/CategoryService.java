@@ -10,6 +10,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.*;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategoryInDatabaseException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundObjectiveInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 import tech.inovasoft.inevolving.ms.categories.service.client.ObjectiveServiceClient;
@@ -50,7 +51,7 @@ public class CategoryService {
     public ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(
             UUID idUser,
             RequestAddObjectiveToCategoryDTO dto
-    ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException {
+    ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException, NotFoundObjectiveInDatabaseException {
         var category = categoryRepository.findCategoryByIdAndIdUser(dto.idCategory(), idUser);
 
         var objective = categoryRepository.findObjectiveByIdAndIdUser(dto.idObjective(), idUser);
@@ -69,7 +70,7 @@ public class CategoryService {
             UUID idUser,
             UUID idCategory,
             UUID idObjective
-    ) throws NotFoundCategoryInDatabaseException, DataBaseException {
+    ) throws NotFoundCategoryInDatabaseException, DataBaseException, NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException {
         var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
 
         var objective = categoryRepository.findObjectiveByIdAndIdUser(idObjective, idUser);
@@ -145,18 +146,18 @@ public class CategoryService {
         for (UUID id: objectivesList) {
             ResponseObjectiveDTO objective;
             try {
-                //TODO ResponseEntity NOTFOUND
-                objective = objectiveService.getObjectiveById(id);
-            } catch (Exception e) {
+                objective = categoryRepository.findObjectiveByIdAndIdUser(id, idUser);
+                objectives.add(objective);
+            } catch (NotFoundObjectiveInDatabaseException e) {
                 //TODO: Desenvolver teste da falha, para quando não encontrar objetivo.
                 objectivesList.remove(id);
                 continue;
             }
-            objectives.add(objective);
         }
 
         //TODO: Desenvolver teste da falha, para quando nao encontrar objetivos, tenho que testar, se está salvando sem o objetivo.
-        category.setObjectives(objectivesList);
+        List<UUID> newObjectivesList = objectives.stream().map(ResponseObjectiveDTO::idObjective).toList();
+        category.setObjectives(newObjectivesList);
         categoryRepository.saveCategory(category);
 
         return new ResponseObjectivesByCategory(new ResponseCategoryDTO(category), objectives);

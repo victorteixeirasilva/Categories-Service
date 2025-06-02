@@ -16,6 +16,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjec
 import tech.inovasoft.inevolving.ms.categories.domain.exception.DataBaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.ErrorInExternalServiceException;
 import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategoryInDatabaseException;
+import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundObjectiveInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.service.CategoryService;
 
@@ -55,7 +56,7 @@ public class CategoryController {
     public CompletableFuture<ResponseEntity<ResponseCategoryAndNewObjectiveDTO>> addObjectiveToCategory(
             @PathVariable("idUser") UUID idUser,
             @RequestBody RequestAddObjectiveToCategoryDTO dto
-    ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException {
+    ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException, NotFoundObjectiveInDatabaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.addObjectiveToCategory(
                         idUser,
@@ -74,7 +75,7 @@ public class CategoryController {
             @PathVariable("idUser") UUID idUser,
             @PathVariable("idCategory") UUID idCategory,
             @PathVariable("idObjective") UUID idObjective
-    ) throws NotFoundCategoryInDatabaseException, DataBaseException {
+    ) throws NotFoundCategoryInDatabaseException, DataBaseException, NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.removeObjectiveToCategory(
                         idUser,

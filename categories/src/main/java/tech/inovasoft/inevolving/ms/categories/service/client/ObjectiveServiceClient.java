@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @FeignClient(name = "objectives-service", url = "http://localhost:8080/ms/objectives")
 public interface ObjectiveServiceClient {
-
-    @GetMapping("/{idObjective}") // TODO: Testar o get
-    ResponseObjectiveDTO getObjectiveById(@PathVariable UUID idObjective);
+    // TODO: Testar
+    @GetMapping("/{idObjective}/{idUser}")
+    ResponseEntity getObjectiveById(@PathVariable UUID idObjective, @PathVariable UUID idUser);
 
 }
