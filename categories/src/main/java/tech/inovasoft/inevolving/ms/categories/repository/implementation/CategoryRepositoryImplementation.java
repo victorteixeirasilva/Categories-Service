@@ -97,6 +97,14 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         return category.get();
     }
 
+    /**
+     * @description - Find objective by id | Encontra um objetivo pelo id
+     * @param uuid - objective id | Id do objetivo
+     * @param idUser - user id | Id do usuário
+     * @return - objective | objetivo
+     * @throws ErrorInExternalServiceException - error in external service | Erro no serviço externo
+     * @throws NotFoundObjectiveInDatabaseException - objective not found in database | Objetivo não encontrado no banco de dados
+     */
     @Override
     public ResponseObjectiveDTO findObjectiveByIdAndIdUser(UUID uuid, UUID idUser) throws ErrorInExternalServiceException, NotFoundObjectiveInDatabaseException {
         ResponseEntity entity;
@@ -113,7 +121,6 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         }
 
         return (ResponseObjectiveDTO) entity.getBody();
-        //TODO: BLUE
     }
 
     @Override
