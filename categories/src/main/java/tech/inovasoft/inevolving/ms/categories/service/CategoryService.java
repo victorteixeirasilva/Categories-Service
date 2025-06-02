@@ -144,18 +144,10 @@ public class CategoryService {
         List<ResponseObjectiveDTO> objectives = new ArrayList<>();
 
         for (UUID id: objectivesList) {
-            ResponseObjectiveDTO objective;
-            try {
-                objective = categoryRepository.findObjectiveByIdAndIdUser(id, idUser);
-                objectives.add(objective);
-            } catch (NotFoundObjectiveInDatabaseException e) {
-                //TODO: Desenvolver teste da falha, para quando não encontrar objetivo.
-                objectivesList.remove(id);
-                continue;
-            }
+            ResponseObjectiveDTO objective = categoryRepository.findObjectiveByIdAndIdUser(id, idUser);
+            objectives.add(objective);
         }
 
-        //TODO: Desenvolver teste da falha, para quando nao encontrar objetivos, tenho que testar, se está salvando sem o objetivo.
         List<UUID> newObjectivesList = objectives.stream().map(ResponseObjectiveDTO::idObjective).toList();
         category.setObjectives(newObjectivesList);
         categoryRepository.saveCategory(category);

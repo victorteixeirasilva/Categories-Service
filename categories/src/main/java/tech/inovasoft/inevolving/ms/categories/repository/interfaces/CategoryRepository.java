@@ -19,7 +19,7 @@ public interface CategoryRepository {
 
     Category saveCategory(Category newCategory) throws DataBaseException;
 
-    ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO requestDTO) throws ErrorInExternalServiceException, DataBaseException, NotFoundObjectiveInDatabaseException;
+    ResponseCategoryAndNewObjectiveDTO addObjectiveToCategory(UUID idUser, RequestAddObjectiveToCategoryDTO requestDTO) throws ErrorInExternalServiceException, DataBaseException, NotFoundObjectiveInDatabaseException, NotFoundCategoryInDatabaseException;
 
     Category findCategoryByIdAndIdUser(UUID id, UUID idUser) throws DataBaseException, NotFoundCategoryInDatabaseException;
 

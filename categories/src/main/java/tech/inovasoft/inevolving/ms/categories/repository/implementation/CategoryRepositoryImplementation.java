@@ -44,7 +44,6 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         try {
             return categoryRepositoryJpa.save(newCategory);
         } catch (Exception e) {
-            //TODO: Desenvolver teste
             throw new DataBaseException("save");
         }
     }
@@ -64,17 +63,18 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     ) throws
             ErrorInExternalServiceException,
             DataBaseException,
-            NotFoundObjectiveInDatabaseException
+            NotFoundObjectiveInDatabaseException,
+            NotFoundCategoryInDatabaseException
     {
-        var category = categoryRepositoryJpa.findById(requestDTO.idCategory()); //TODO: Refatorar para o metodo findCategoryByIdAndIdUser
+        var category = findCategoryByIdAndIdUser(requestDTO.idCategory(), idUser);
 
         ResponseObjectiveDTO objective = findObjectiveByIdAndIdUser(requestDTO.idObjective(), idUser);
 
-        category.get().getObjectives().add(objective.idObjective());
+        category.getObjectives().add(objective.idObjective());
 
-        saveCategory(category.get());
+        saveCategory(category);
 
-        return new ResponseCategoryAndNewObjectiveDTO(category.get(), objective);
+        return new ResponseCategoryAndNewObjectiveDTO(category, objective);
     }
 
     /**
@@ -97,12 +97,10 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         try {
             category = categoryRepositoryJpa.findByIdAndIdUser(id, idUser);
         } catch (Exception e) {
-            //TODO: Desenvolver teste
             throw new DataBaseException("findByIdAndIdUser");
         }
 
         if (category.isEmpty()) {
-            //TODO: Desenvolver teste
             throw new NotFoundCategoryInDatabaseException();
         }
 
@@ -129,12 +127,10 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         try {
             entity = objectiveServiceClient.getObjectiveById(uuid, idUser);
         } catch (Exception e) {
-            //TODO: Desenvolver teste
             throw new ErrorInExternalServiceException("objectiveServiceClient.getObjectiveById");
         }
 
         if (entity.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
-            //TODO: Desenvolver teste
             throw new NotFoundObjectiveInDatabaseException();
         }
 
@@ -184,7 +180,6 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
             categoryRepositoryJpa.delete(category);
             return new ResponseMessageDTO("Category removed successfully");
         } catch (Exception e) {
-            //TODO: Desenvolver teste
             throw new DataBaseException("delete");
         }
     }
@@ -207,18 +202,32 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         try {
             categories = categoryRepositoryJpa.findAllByIdUser(idUser);
         } catch (Exception e) {
-            //TODO: Desenvolver teste
             throw new DataBaseException("findAllByIdUser");
         }
         if (categories.isEmpty()) {
-            //TODO: Desenvolver teste
             throw new NotFoundCategoryInDatabaseException();
         }
         return categories;
     }
 
+    /**
+     * @description - Get objectives by category | Obtém os objetivos pela categoria
+     * @param idCategory - category id | Id da categoria
+     * @param idUser - user id | Id do usuário
+     * @return - objectives | Objetivos
+     * @throws NotFoundCategoryInDatabaseException - category not found in database | Categoria não encontrada no banco de dados
+     * @throws DataBaseException - database error | Erro no banco de dados
+     * @throws ErrorInExternalServiceException - error in external service | Erro no serviço externo
+     */
     @Override
-    public List<UUID> getObjectivesByCategory(UUID idCategory, UUID idUser) throws NotFoundCategoryInDatabaseException, DataBaseException, NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException {
+    public List<UUID> getObjectivesByCategory(
+            UUID idCategory,
+            UUID idUser
+    ) throws
+            NotFoundCategoryInDatabaseException,
+            DataBaseException,
+            ErrorInExternalServiceException
+    {
         var category = findCategoryByIdAndIdUser(idCategory, idUser);
         List<UUID> objectives = new ArrayList<>(category.getObjectives());
 
@@ -234,6 +243,5 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         saveCategory(category);
 
         return objectives;
-        //TODO: BLUE
     }
 }

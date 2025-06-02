@@ -66,7 +66,7 @@ public class CategoryRepositorySuccessTest {
     }
 
     @Test
-    public void addObjectiveToCategory() throws ErrorInExternalServiceException, DataBaseException, NotFoundObjectiveInDatabaseException {
+    public void addObjectiveToCategory() throws ErrorInExternalServiceException, DataBaseException, NotFoundObjectiveInDatabaseException, NotFoundCategoryInDatabaseException {
         // Given
         var idUser = UUID.randomUUID();
         var requestDTO = new RequestAddObjectiveToCategoryDTO(UUID.randomUUID(), UUID.randomUUID());
@@ -103,7 +103,7 @@ public class CategoryRepositorySuccessTest {
         );
 
         // When
-        when(categoryRepositoryJpa.findById(requestDTO.idCategory())).thenReturn(Optional.of(oldCategory));
+        when(categoryRepositoryJpa.findByIdAndIdUser(requestDTO.idCategory(), idUser)).thenReturn(Optional.of(oldCategory));
         when(objectiveServiceClient.getObjectiveById(requestDTO.idObjective(), idUser)).thenReturn(ResponseEntity.ok(objective));
         when(categoryRepositoryJpa.save(newCategory)).thenReturn(newCategory);
         var result = categoryRepositoryImplementation.addObjectiveToCategory(idUser, requestDTO);
@@ -120,7 +120,7 @@ public class CategoryRepositorySuccessTest {
         assertEquals(expectedDTO.objective().nameObjective(), result.objective().nameObjective());
         assertEquals(expectedDTO.objective().descriptionObjective(), result.objective().descriptionObjective());
 
-        verify(categoryRepositoryJpa).findById(requestDTO.idCategory());
+        verify(categoryRepositoryJpa).findByIdAndIdUser(requestDTO.idCategory(), idUser);
         verify(objectiveServiceClient).getObjectiveById(requestDTO.idObjective(), idUser);
         verify(categoryRepositoryJpa).save(newCategory);
     }
