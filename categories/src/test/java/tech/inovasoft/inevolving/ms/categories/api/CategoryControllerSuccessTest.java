@@ -12,6 +12,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.service.client.dto.RequestCreateObjectiveDTO;
 
 import java.util.UUID;
@@ -34,7 +35,7 @@ public class CategoryControllerSuccessTest {
 
 
     @Test
-    public void addCategory_Ok(){
+    public void addCategory_Ok() {
         RequestCategoryDTO requestCategoryDTO = new RequestCategoryDTO(
                 faker.name().firstName(),
                 faker.name().lastName()
@@ -81,7 +82,6 @@ public class CategoryControllerSuccessTest {
 
         idObjective = UUID.fromString(responseObjectives.extract().jsonPath().get("id"));
 
-        //TODO: Desenvolver o teste
         RequestAddObjectiveToCategoryDTO requestAddObjectiveToCategoryDTO =
                 new RequestAddObjectiveToCategoryDTO(
                         idCategory,
@@ -109,7 +109,28 @@ public class CategoryControllerSuccessTest {
 
     @Test
     public void updateCategory_Ok() {
-        //TODO: Desenvolver o teste
+        var requestUpdateCategoryDTO = new RequestUpdateCategoryDTO(
+                faker.name().firstName(),
+                faker.name().lastName()
+        );
+
+        // Cria a especificação da requisição
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        // Faz a requisição GET e armazena a resposta
+        ValidatableResponse response = requestSpecification
+                .body(requestUpdateCategoryDTO)
+                .when()
+                .patch("http://localhost:" + port + "/ms/categories/" + idUser + "/" + idCategory)
+                .then();
+
+        // Valida a resposta
+        response.assertThat().statusCode(200).and()
+                .body("id", equalTo(idCategory.toString())).and()
+                .body("idUser", equalTo(idUser.toString())).and()
+                .body("categoryName", equalTo(requestUpdateCategoryDTO.categoryName())).and()
+                .body("categoryDescription", equalTo(requestUpdateCategoryDTO.categoryDescription()));
     }
 
     @Test
