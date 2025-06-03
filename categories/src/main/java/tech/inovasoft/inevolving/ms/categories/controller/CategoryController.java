@@ -70,11 +70,11 @@ public class CategoryController {
             description = "Returns a confirmation that the objective was removed from the category | Retorna a confirmação que o objetivo foi removido da categoria."
     )
     @Async("asyncExecutor")
-    @DeleteMapping("/objective/{idUser}/{idCategory}/{idObjective}")
+    @DeleteMapping("/objective/{idUser}/{idCategory}/{id}")
     public CompletableFuture<ResponseEntity<ResponseMessageDTO>> removeObjectiveToCategory(
             @PathVariable("idUser") UUID idUser,
             @PathVariable("idCategory") UUID idCategory,
-            @PathVariable("idObjective") UUID idObjective
+            @PathVariable("id") UUID idObjective
     ) throws NotFoundCategoryInDatabaseException, DataBaseException, NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
                 categoryService.removeObjectiveToCategory(
@@ -140,12 +140,12 @@ public class CategoryController {
     }
 
     @Operation(
-            summary = "",
-            description = ""
+            summary = "Get objectives by category | Objetivos por categoria",
+            description = "Returns a list with all objectives of the category | Retorna uma lista com todos os objetivos da categoria."
     )
     @Async("asyncExecutor")
     @GetMapping("/{idUser}/{idCategory}")
-    public CompletableFuture<ResponseEntity<ResponseObjectivesByCategory>> getCategories(
+    public CompletableFuture<ResponseEntity<ResponseObjectivesByCategory>> getObjectivesByCategory(
             @PathVariable("idUser") UUID idUser,
             @PathVariable("idCategory") UUID idCategory
     ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException, NotFoundObjectiveInDatabaseException {

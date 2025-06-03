@@ -1,12 +1,10 @@
-package tech.inovasoft.inevolving.ms.categories;
+package tech.inovasoft.inevolving.ms.categories.unit;
 
-import jakarta.persistence.ElementCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
@@ -100,12 +98,12 @@ public class CategoryServiceSuccessTest {
         );
 
         ResponseObjectiveDTO objective = new ResponseObjectiveDTO(
-                requestDTO.idObjective(),
+                requestDTO.idObjective().toString(),
                 "nameObjective",
                 "descriptionObjective",
                 "String statusObjective",
                 Date.valueOf("2022-01-01"),
-                idUser
+                idUser.toString()
         );
 
         ResponseCategoryAndNewObjectiveDTO expectedResponse = new ResponseCategoryAndNewObjectiveDTO(
@@ -125,7 +123,7 @@ public class CategoryServiceSuccessTest {
         assertEquals(expectedResponse.idUser(), result.idUser());
         assertEquals(expectedResponse.categoryName(), result.categoryName());
         assertEquals(expectedResponse.categoryDescription(), result.categoryDescription());
-        assertEquals(expectedResponse.objective().idObjective(), result.objective().idObjective());
+        assertEquals(expectedResponse.objective().id(), result.objective().id());
         assertEquals(expectedResponse.objective().nameObjective(), result.objective().nameObjective());
         assertEquals(expectedResponse.objective().descriptionObjective(), result.objective().descriptionObjective());
         assertEquals(expectedResponse.objective().idUser(), result.objective().idUser());
@@ -144,7 +142,7 @@ public class CategoryServiceSuccessTest {
 
         var category = new Category();
         category.setId(idCategory);
-        var objective = new ResponseObjectiveDTO(idObjective, "nameObjective", "descriptionObjective", "String statusObjective", Date.valueOf("2022-01-01"), idUser);
+        var objective = new ResponseObjectiveDTO(idObjective.toString(), "nameObjective", "descriptionObjective", "String statusObjective", Date.valueOf("2022-01-01"), idUser.toString());
 
         // When
         when(categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser)).thenReturn(category);
@@ -294,20 +292,20 @@ public class CategoryServiceSuccessTest {
 
         List<ResponseObjectiveDTO> objectives = new ArrayList<>();
         objectives.add(new ResponseObjectiveDTO(
-                objectivesUUIDs.get(0),
+                objectivesUUIDs.get(0).toString(),
                 "nameObjective1",
                 "descriptionObjective1",
                 "String statusObjective1",
                 Date.valueOf("2022-01-01"),
-                idUser
+                idUser.toString()
         ));
         objectives.add(new ResponseObjectiveDTO(
-                objectivesUUIDs.get(1),
+                objectivesUUIDs.get(1).toString(),
                 "nameObjective2",
                 "descriptionObjective2",
                 "String statusObjective2",
                 Date.valueOf("2022-01-01"),
-                idUser
+                idUser.toString()
         ));
 
         var category = new Category(
@@ -344,10 +342,10 @@ public class CategoryServiceSuccessTest {
                 result.category().categoryDescription()
         );
         assertEquals(responseObjectivesByCategory.objectives().size(), result.objectives().size());
-        assertEquals(responseObjectivesByCategory.objectives().get(0).idObjective(), result.objectives().get(0).idObjective());
+        assertEquals(responseObjectivesByCategory.objectives().get(0).id(), result.objectives().get(0).id());
         assertEquals(responseObjectivesByCategory.objectives().get(0).idUser(), result.objectives().get(0).idUser());
         assertEquals(responseObjectivesByCategory.objectives().get(0).nameObjective(), result.objectives().get(0).nameObjective());
-        assertEquals(responseObjectivesByCategory.objectives().get(1).idObjective(), result.objectives().get(1).idObjective());
+        assertEquals(responseObjectivesByCategory.objectives().get(1).id(), result.objectives().get(1).id());
         assertEquals(responseObjectivesByCategory.objectives().get(1).idUser(), result.objectives().get(1).idUser());
         assertEquals(responseObjectivesByCategory.objectives().get(1).nameObjective(), result.objectives().get(1).nameObjective());
 

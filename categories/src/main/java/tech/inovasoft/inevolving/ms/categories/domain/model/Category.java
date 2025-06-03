@@ -22,7 +22,7 @@ public class Category {
     private UUID idUser;
     private String categoryName;
     private String categoryDescription;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     List<UUID> objectives;
 
     public Category(UUID idUser, RequestCategoryDTO requestDTO) {

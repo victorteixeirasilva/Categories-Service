@@ -1,4 +1,4 @@
-package tech.inovasoft.inevolving.ms.categories;
+package tech.inovasoft.inevolving.ms.categories.unit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

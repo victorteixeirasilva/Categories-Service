@@ -72,7 +72,10 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
 
         ResponseObjectiveDTO objective = findObjectiveByIdAndIdUser(requestDTO.idObjective(), idUser);
 
-        category.getObjectives().add(objective.idObjective());
+        List<UUID> newObjectives = new ArrayList<>(category.getObjectives());
+
+        newObjectives.add(objective.id());
+        category.setObjectives(newObjectives);
 
         saveCategory(category);
 
@@ -136,7 +139,14 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
             throw new NotFoundObjectiveInDatabaseException();
         }
 
-        return entity.getBody();
+        return new ResponseObjectiveDTO(
+                    entity.getBody().id(),
+                    entity.getBody().nameObjective(),
+                    entity.getBody().descriptionObjective(),
+                    entity.getBody().statusObjective(),
+                    entity.getBody().completionDate(),
+                    entity.getBody().idUser()
+                );
     }
 
     /**

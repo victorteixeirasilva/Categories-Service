@@ -1,6 +1,5 @@
-package tech.inovasoft.inevolving.ms.categories;
+package tech.inovasoft.inevolving.ms.categories.unit;
 
-import jakarta.persistence.ElementCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +15,6 @@ import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategory
 import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundObjectiveInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.implementation.CategoryRepositoryImplementation;
-import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepositoryJpa;
 import tech.inovasoft.inevolving.ms.categories.service.client.ObjectiveServiceClient;
 
@@ -115,7 +113,7 @@ public class CategoryRepositorySuccessTest {
         assertEquals(expectedDTO.categoryName(), result.categoryName());
         assertEquals(expectedDTO.categoryDescription(), result.categoryDescription());
         assertEquals(expectedDTO.idCategory(), result.idCategory());
-        assertEquals(expectedDTO.objective().idObjective(), result.objective().idObjective());
+        assertEquals(expectedDTO.objective().id(), result.objective().id());
         assertEquals(expectedDTO.objective().idUser(), result.objective().idUser());
         assertEquals(expectedDTO.objective().nameObjective(), result.objective().nameObjective());
         assertEquals(expectedDTO.objective().descriptionObjective(), result.objective().descriptionObjective());
@@ -162,7 +160,7 @@ public class CategoryRepositorySuccessTest {
         assertNotNull(result);
 
         assert expectedObjective != null;
-        assertEquals(expectedObjective.idObjective(), result.idObjective());
+        assertEquals(expectedObjective.id(), result.id());
         assertEquals(expectedObjective.idUser(), result.idUser());
         assertEquals(expectedObjective.nameObjective(), result.nameObjective());
         assertEquals(expectedObjective.descriptionObjective(), result.descriptionObjective());

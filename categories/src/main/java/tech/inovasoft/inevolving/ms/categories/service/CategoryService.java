@@ -1,7 +1,6 @@
 package tech.inovasoft.inevolving.ms.categories.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
@@ -148,7 +147,7 @@ public class CategoryService {
             objectives.add(objective);
         }
 
-        List<UUID> newObjectivesList = objectives.stream().map(ResponseObjectiveDTO::idObjective).toList();
+        List<UUID> newObjectivesList = objectives.stream().map(ResponseObjectiveDTO::id).toList();
         category.setObjectives(newObjectivesList);
         categoryRepository.saveCategory(category);
 

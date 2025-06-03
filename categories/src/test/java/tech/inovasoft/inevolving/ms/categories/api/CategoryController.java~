@@ -1,0 +1,91 @@
+package tech.inovasoft.inevolving.ms.categories.api;
+
+import com.github.javafaker.Faker;
+import io.restassured.http.ContentType;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
+
+import java.util.UUID;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.isA;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class CategoryController {
+
+    @LocalServerPort
+    private int port;
+
+    public static Faker faker = new Faker();
+
+    private static UUID idUser = UUID.randomUUID();
+    private static UUID idObjective;
+
+
+    @Test
+    public void addCategory_Ok(){
+        RequestCategoryDTO requestCategoryDTO = new RequestCategoryDTO(
+                faker.name().firstName(),
+                faker.name().lastName()
+        );
+
+        // Cria a especificação da requisição
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        // Faz a requisição GET e armazena a resposta
+        ValidatableResponse response = requestSpecification.body(requestCategoryDTO)
+                .when()
+                .post("http://localhost:" + port + "/ms/categories/" + idUser)
+                .then();
+
+        // Valida a resposta
+        response.assertThat().statusCode(200).and()
+                .body("id", Matchers.notNullValue())
+                .body("idUser", equalTo("3fa85f64-5717-4562-b3fc-2c963f66afa6"))
+                .body("categoryName", equalTo(requestCategoryDTO.categoryName()))
+                .body("categoryDescription", equalTo(requestCategoryDTO.categoryDescription()));
+    }
+
+    @Test
+    public void addObjectiveToCategory_Ok() {
+        //TODO: Desenvolver o teste
+    }
+
+    @Test
+    public void updateCategory_Ok() {
+        //TODO: Desenvolver o teste
+    }
+
+    @Test
+    public void getCategories_Ok() {
+        //TODO: Desenvolver o teste
+    }
+
+    @Test
+    public void removeCategory_Ok() {
+        //TODO: Desenvolver o teste
+    }
+
+    @Test
+    public void getObjectivesByCategory_Ok() {
+        //TODO: Desenvolver o teste
+    }
+
+    @Test
+    public void removeObjectiveToCategory_Ok() {
+        //TODO: Desenvolver o teste
+    }
+}
