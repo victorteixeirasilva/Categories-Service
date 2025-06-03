@@ -14,6 +14,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObje
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
 import tech.inovasoft.inevolving.ms.categories.service.client.dto.RequestCreateObjectiveDTO;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class CategoryControllerSuccessTest {
     private static UUID idUser = UUID.randomUUID();
     private static UUID idObjective;
     private static UUID idCategory;
+    private static UUID oldIdCategory;
 
 
     @Test
@@ -139,6 +141,8 @@ public class CategoryControllerSuccessTest {
     @Test
     public void getCategories_Ok() {
 
+        // Cria um novo registro
+        oldIdCategory = idCategory;
         addCategory_Ok();
 
         // Cria a especificação da requisição
@@ -163,6 +167,35 @@ public class CategoryControllerSuccessTest {
 
     @Test
     public void removeCategory_Ok() {
+        // Cria a especificação da requisição
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        // Faz a requisição GET e armazena a resposta
+        ValidatableResponse response = requestSpecification
+                .when()
+                .delete("http://localhost:" + port + "/ms/categories/" + idUser + "/" + oldIdCategory)
+                .then();
+
+        // Valida a resposta
+        response.assertThat().statusCode(200).and()
+                .body("message", equalTo("Category removed successfully"));
+
+        // Cria a especificação da requisição
+        RequestSpecification requestSpecificationGet = given()
+                .contentType(ContentType.JSON);
+
+        // Faz a requisição GET e armazena a resposta
+        ValidatableResponse responseGet = requestSpecification
+                .when()
+                .get("http://localhost:" + port + "/ms/categories/" + idUser)
+                .then();
+
+        // Valida a resposta
+        List<ResponseCategoryDTO> caregoriesGet =
+                responseGet.extract().jsonPath().get("categories");
+
+        assertEquals(1, caregoriesGet.size());
         //TODO: Desenvolver o teste
     }
 
