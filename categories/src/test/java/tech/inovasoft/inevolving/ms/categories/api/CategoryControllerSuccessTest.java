@@ -13,12 +13,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.service.client.dto.RequestCreateObjectiveDTO;
 
+import java.util.List;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -135,7 +138,27 @@ public class CategoryControllerSuccessTest {
 
     @Test
     public void getCategories_Ok() {
-        //TODO: Desenvolver o teste
+
+        addCategory_Ok();
+
+        // Cria a especificação da requisição
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        // Faz a requisição GET e armazena a resposta
+        ValidatableResponse response = requestSpecification
+                .when()
+                .get("http://localhost:" + port + "/ms/categories/" + idUser)
+                .then();
+
+        // Valida a resposta
+        List<ResponseCategoryDTO> caregories =
+                response.extract().jsonPath().get("categories");
+
+        assertEquals(2, caregories.size());
+
+        response.assertThat().statusCode(200).and()
+                .body("idUser", equalTo(idUser.toString()));
     }
 
     @Test
