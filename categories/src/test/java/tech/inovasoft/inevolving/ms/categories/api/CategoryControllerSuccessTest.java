@@ -15,6 +15,7 @@ import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestCategor
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestUpdateCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
+import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.service.client.dto.RequestCreateObjectiveDTO;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class CategoryControllerSuccessTest {
 
     public static Faker faker = new Faker();
 
-    private static UUID idUser = UUID.randomUUID();
+    private static final UUID idUser = UUID.randomUUID();
     private static UUID idObjective;
     private static UUID idCategory;
     private static UUID oldIdCategory;
@@ -192,20 +193,88 @@ public class CategoryControllerSuccessTest {
                 .then();
 
         // Valida a resposta
-        List<ResponseCategoryDTO> caregoriesGet =
+        List<ResponseCategoryDTO> categories =
                 responseGet.extract().jsonPath().get("categories");
 
-        assertEquals(1, caregoriesGet.size());
-        //TODO: Desenvolver o teste
-    }
-
-    @Test
-    public void getObjectivesByCategory_Ok() {
-        //TODO: Desenvolver o teste
+        assertEquals(2, categories.size());
     }
 
     @Test
     public void removeObjectiveToCategory_Ok() {
+
+        UUID idCategory;
+
+        var requestCategoryDTO = new RequestCategoryDTO(
+                faker.name().firstName(),
+                faker.name().lastName()
+        );
+
+        // Cria a especificação da requisição
+        var requestSpecificationCategory = given()
+                .contentType(ContentType.JSON);
+
+        // Faz a requisição GET e armazena a resposta
+        var responseCategory = requestSpecificationCategory.body(requestCategoryDTO)
+                .when()
+                .post("http://localhost:" + port + "/ms/categories/" + idUser)
+                .then();
+
+        idCategory = UUID.fromString(responseCategory.extract().jsonPath().get("id"));
+
+        UUID idObjective;
+
+        // Cria a especificação da requisição
+        RequestSpecification requestSpecificationObjectives = given()
+                .contentType(ContentType.JSON);
+
+        RequestCreateObjectiveDTO requestCreateObjectiveDTO = new RequestCreateObjectiveDTO(
+                faker.name().firstName(),
+                faker.name().lastName(),
+                idUser
+        );
+
+        // Faz a requisição GET e armazena a resposta
+        ValidatableResponse responseObjectives = requestSpecificationObjectives
+                .body(requestCreateObjectiveDTO)
+                .when()
+                .post("http://localhost:8080/ms/objectives")
+                .then();
+
+        idObjective = UUID.fromString(responseObjectives.extract().jsonPath().get("id"));
+
+        // Cria a especificação da requisição
+        RequestSpecification requestSpecification = given()
+                .contentType(ContentType.JSON);
+
+        // Faz a requisição GET e armazena a resposta
+        ValidatableResponse response = requestSpecification
+                .when()
+                .delete("http://localhost:" + port + "/ms/categories/objective/" + idUser + "/" + idCategory + "/" + idObjective)
+                .then();
+
+        // Valida a resposta
+        response.assertThat().statusCode(200).and()
+                .body("message", equalTo("Objective removed from category successfully"));
+
+        // Cria a especificação da requisição
+        RequestSpecification requestSpecificationGet = given()
+                .contentType(ContentType.JSON);
+
+        // Faz a requisição GET e armazena a resposta
+        ValidatableResponse responseGet = requestSpecification
+                .when()
+                .get("http://localhost:" + port + "/ms/categories/" + idUser + "/" + idCategory)
+                .then();
+
+        // Valida a resposta
+        List<ResponseObjectiveDTO> objectives =
+                responseGet.extract().jsonPath().get("objectives");
+
+        assertEquals(0, objectives.size());
+    }
+
+    @Test
+    public void getObjectivesByCategory_Ok() {
         //TODO: Desenvolver o teste
     }
 }

@@ -20,7 +20,6 @@ import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundObjectiv
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.service.CategoryService;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
