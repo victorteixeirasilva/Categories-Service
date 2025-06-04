@@ -272,9 +272,4 @@ public class CategoryControllerSuccessTest {
 
         assertEquals(0, objectives.size());
     }
-
-    @Test
-    public void getObjectivesByCategory_Ok() {
-        //TODO: Desenvolver o teste
-    }
 }
