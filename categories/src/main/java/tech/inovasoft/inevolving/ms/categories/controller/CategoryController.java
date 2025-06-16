@@ -57,11 +57,8 @@ public class CategoryController {
             @RequestBody RequestAddObjectiveToCategoryDTO dto
     ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException, NotFoundObjectiveInDatabaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
-                categoryService.addObjectiveToCategory(
-                        idUser,
-                        dto
-                ))
-        );
+                categoryService.addObjectiveToCategory(idUser, dto)
+        ));
     }
 
     @Operation(
@@ -76,12 +73,8 @@ public class CategoryController {
             @PathVariable("id") UUID idObjective
     ) throws NotFoundCategoryInDatabaseException, DataBaseException, NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
-                categoryService.removeObjectiveToCategory(
-                        idUser,
-                        idCategory,
-                        idObjective
-                ))
-        );
+                categoryService.removeObjectiveToCategory(idUser, idCategory, idObjective)
+        ));
     }
 
     @Operation(
@@ -95,11 +88,8 @@ public class CategoryController {
             @PathVariable("idCategory") UUID idCategory
     ) throws NotFoundCategoryInDatabaseException, DataBaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
-                categoryService.removeCategory(
-                        idUser,
-                        idCategory
-                ))
-        );
+                categoryService.removeCategory(idUser, idCategory)
+        ));
     }
 
     @Operation(
@@ -114,12 +104,8 @@ public class CategoryController {
             @RequestBody RequestUpdateCategoryDTO dto
     ) throws DataBaseException, NotFoundCategoryInDatabaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
-                categoryService.updateCategory(
-                        idUser,
-                        idCategory,
-                        dto
-                ))
-        );
+                categoryService.updateCategory(idUser, idCategory, dto)
+        ));
     }
 
     @Operation(
@@ -132,10 +118,8 @@ public class CategoryController {
             @PathVariable("idUser") UUID idUser
     ) throws NotFoundCategoryInDatabaseException, DataBaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
-                categoryService.getCategories(
-                        idUser
-                ))
-        );
+                categoryService.getCategories(idUser)
+        ));
     }
 
     @Operation(
@@ -149,12 +133,8 @@ public class CategoryController {
             @PathVariable("idCategory") UUID idCategory
     ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException, NotFoundObjectiveInDatabaseException {
         return CompletableFuture.completedFuture(ResponseEntity.ok(
-                categoryService.getObjectivesByCategory
-                        (
-                        idUser,
-                        idCategory
-                ))
-        );
+                categoryService.getObjectivesByCategory(idUser, idCategory)
+        ));
     }
 
 
