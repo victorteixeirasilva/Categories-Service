@@ -97,7 +97,7 @@ public class CategoryController {
             description = " Returns the updated category | Retorna a categoria atualizada."
     )
     @Async("asyncExecutor")
-    @PatchMapping("/{idUser}/{idCategory}")
+    @PutMapping("/{idUser}/{idCategory}")
     public CompletableFuture<ResponseEntity<Category>> updateCategory(
             @PathVariable("idUser") UUID idUser,
             @PathVariable("idCategory") UUID idCategory,
