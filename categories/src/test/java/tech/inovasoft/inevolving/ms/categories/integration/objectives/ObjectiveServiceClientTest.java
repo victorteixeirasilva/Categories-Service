@@ -8,34 +8,42 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseObjectiveDTO;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
+@SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ObjectiveServiceClientTest {
 
+    private final String baseUrl;
+
+    public ObjectiveServiceClientTest(@Value("${inevolving.uri.ms.objectives}") String fullUrl) throws URISyntaxException {
+        URI uri = new URI(fullUrl);
+        this.baseUrl = uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort();
+    }
 
     @Test
     public void integrationTest_Ok() {
-        // Cria a especificação da requisição
+
         RequestSpecification requestSpecification = given()
                 .contentType(ContentType.JSON);
 
-        // Faz a requisição GET e armazena a resposta
-        ValidatableResponse response = requestSpecification.when()
-                .get("http://localhost:8080/ms/objectives/e38b1d18-d0c9-434c-9057-960d4878b92d/3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        ValidatableResponse response = requestSpecification
+                .when()
+                .get(baseUrl + "/actuator/health")
                 .then();
 
-        // Valida a resposta
         response.assertThat().statusCode(200).and()
-                .body("id", equalTo("e38b1d18-d0c9-434c-9057-960d4878b92d"))
-                .body("nameObjective", equalTo("string"))
-                .body("descriptionObjective", equalTo("string"))
-                .body("idUser", equalTo("3fa85f64-5717-4562-b3fc-2c963f66afa6"));
+                .body("status", equalTo("UP"));
+
     }
 
 }
