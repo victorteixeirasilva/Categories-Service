@@ -1,0 +1,13 @@
+services:
+  categories-service:
+    build:
+      context: .
+    container_name: categories-service
+#    ports:
+#      - "8081:8081"
+    networks:
+      - backend
+
+networks:
+  backend:
+    external: true
