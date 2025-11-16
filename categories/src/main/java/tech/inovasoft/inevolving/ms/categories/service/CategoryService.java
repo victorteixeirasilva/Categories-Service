@@ -12,11 +12,14 @@ import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundCategory
 import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundObjectiveInDatabaseException;
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
+import tech.inovasoft.inevolving.ms.categories.service.client.Auth_For_MService.TokenCache;
 import tech.inovasoft.inevolving.ms.categories.service.client.ObjectiveServiceClient;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static tech.inovasoft.inevolving.ms.categories.service.client.Auth_For_MService.MicroServices.BOOKS_SERVICE;
 
 @Service
 public class CategoryService {
