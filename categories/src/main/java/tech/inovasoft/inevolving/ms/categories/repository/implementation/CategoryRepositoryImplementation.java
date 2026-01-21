@@ -143,9 +143,20 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
             ErrorInExternalServiceException,
             NotFoundObjectiveInDatabaseException
     {
-        ResponseEntity<ResponseObjectiveDTO> entity = null;
+        ResponseEntity<ResponseObjectiveDTO> entity;
         try {
             entity = objectiveServiceClient.getObjectiveById(uuid, idUser, getValidToken());
+            if (entity.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+                throw new NotFoundObjectiveInDatabaseException();
+            }
+            return new ResponseObjectiveDTO(
+                    entity.getBody().id(),
+                    entity.getBody().nameObjective(),
+                    entity.getBody().descriptionObjective(),
+                    entity.getBody().statusObjective(),
+                    entity.getBody().completionDate(),
+                    entity.getBody().idUser()
+            );
         } catch (FeignException e) {
             if (e.getClass() == FeignException.Unauthorized.class) {
                 cachedToken = null;
@@ -155,18 +166,7 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
             throw new ErrorInExternalServiceException("objectiveServiceClient.getObjectiveById");
         }
 
-        if (entity.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
-            throw new NotFoundObjectiveInDatabaseException();
-        }
-
-        return new ResponseObjectiveDTO(
-                    entity.getBody().id(),
-                    entity.getBody().nameObjective(),
-                    entity.getBody().descriptionObjective(),
-                    entity.getBody().statusObjective(),
-                    entity.getBody().completionDate(),
-                    entity.getBody().idUser()
-                );
+        return null;
     }
 
     /**
@@ -261,18 +261,25 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
             ErrorInExternalServiceException
     {
         var category = findCategoryByIdAndIdUser(idCategory, idUser);
-        List<UUID> objectives = new ArrayList<>(category.getObjectives());
+        List<UUID> objectives = new ArrayList<>();
+        objectives.addAll(category.getObjectives());
 
-        for (UUID id : category.getObjectives()) {
+        int count = 0;
+        for (UUID id : objectives) {
             try {
                 var objective = findObjectiveByIdAndIdUser(id, idUser);
-            } catch (NotFoundObjectiveInDatabaseException e) {
-                objectives.remove(id);
+            } catch (Exception e) {
+                objectives.remove(count);
             }
+            count++;
         }
 
         category.setObjectives(objectives);
         saveCategory(category);
+
+        if (objectives.isEmpty()) {
+            return new ArrayList<>();
+        }
 
         return objectives;
     }

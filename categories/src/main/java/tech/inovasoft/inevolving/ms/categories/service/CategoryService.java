@@ -139,15 +139,23 @@ public class CategoryService {
             UUID idUser,
             UUID idCategory
     ) throws ErrorInExternalServiceException, DataBaseException, NotFoundCategoryInDatabaseException, NotFoundObjectiveInDatabaseException {
-        var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
+        categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
 
         var objectivesList = categoryRepository.getObjectivesByCategory(idCategory, idUser);
+
+        var category = categoryRepository.findCategoryByIdAndIdUser(idCategory, idUser);
 
         List<ResponseObjectiveDTO> objectives = new ArrayList<>();
 
         for (UUID id: objectivesList) {
-            ResponseObjectiveDTO objective = categoryRepository.findObjectiveByIdAndIdUser(id, idUser);
-            objectives.add(objective);
+            try {
+                ResponseObjectiveDTO objective = categoryRepository.findObjectiveByIdAndIdUser(id, idUser);
+                if (objective != null) {
+                    objectives.add(objective);
+                }
+            } catch (Exception e) {
+                continue;
+            }
         }
 
         List<UUID> newObjectivesList = objectives.stream().map(ResponseObjectiveDTO::id).toList();
