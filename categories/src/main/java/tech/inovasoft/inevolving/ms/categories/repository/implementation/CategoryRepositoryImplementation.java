@@ -1,5 +1,6 @@
 package tech.inovasoft.inevolving.ms.categories.repository.implementation;
 
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ import tech.inovasoft.inevolving.ms.categories.domain.exception.NotFoundObjectiv
 import tech.inovasoft.inevolving.ms.categories.domain.model.Category;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepository;
 import tech.inovasoft.inevolving.ms.categories.repository.interfaces.CategoryRepositoryJpa;
+import tech.inovasoft.inevolving.ms.categories.service.client.Auth_For_MService.MicroServices;
+import tech.inovasoft.inevolving.ms.categories.service.client.Auth_For_MService.TokenCache;
 import tech.inovasoft.inevolving.ms.categories.service.client.ObjectiveServiceClient;
 
 import java.util.ArrayList;
@@ -30,6 +33,18 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
 
     @Autowired
     private ObjectiveServiceClient objectiveServiceClient;
+
+    @Autowired
+    private TokenCache tokenCache;
+
+    private String cachedToken;
+
+    private String getValidToken() {
+        if (cachedToken == null) {
+            cachedToken = tokenCache.getToken(MicroServices.OBJECTIVES_SERVICE);
+        }
+        return cachedToken;
+    }
 
     /**
      * @description - Save category in database | Salva a categoria no banco de dados.
@@ -128,9 +143,14 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
             ErrorInExternalServiceException,
             NotFoundObjectiveInDatabaseException
     {
-        ResponseEntity<ResponseObjectiveDTO> entity;
+        ResponseEntity<ResponseObjectiveDTO> entity = null;
         try {
-            entity = objectiveServiceClient.getObjectiveById(uuid, idUser);
+            entity = objectiveServiceClient.getObjectiveById(uuid, idUser, getValidToken());
+        } catch (FeignException e) {
+            if (e.getClass() == FeignException.Unauthorized.class) {
+                cachedToken = null;
+                return findObjectiveByIdAndIdUser(uuid, idUser);
+            }
         } catch (Exception e) {
             throw new ErrorInExternalServiceException("objectiveServiceClient.getObjectiveById");
         }

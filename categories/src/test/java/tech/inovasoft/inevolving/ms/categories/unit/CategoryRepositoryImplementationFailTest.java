@@ -115,7 +115,7 @@ public class CategoryRepositoryImplementationFailTest {
         var expectedObjective = response.getBody();
 
         // When
-        when(objectiveServiceClient.getObjectiveById(idObjective, idUser))
+        when(objectiveServiceClient.getObjectiveById(idObjective, idUser, anyString()))
                 .thenThrow(new RuntimeException());
         var result = assertThrows(ErrorInExternalServiceException.class, () -> {
             categoryRepositoryImplementation
@@ -128,7 +128,7 @@ public class CategoryRepositoryImplementationFailTest {
         assert expectedObjective != null;
         assertEquals("Error in external service: objectiveServiceClient.getObjectiveById", result.getMessage());
 
-        verify(objectiveServiceClient).getObjectiveById(idObjective, idUser);
+        verify(objectiveServiceClient).getObjectiveById(idObjective, idUser, anyString());
     }
 
     @Test
@@ -140,7 +140,7 @@ public class CategoryRepositoryImplementationFailTest {
         var expectedObjective = response.getBody();
 
         // When
-        when(objectiveServiceClient.getObjectiveById(idObjective, idUser))
+        when(objectiveServiceClient.getObjectiveById(idObjective, idUser, anyString()))
                 .thenReturn(ResponseEntity.notFound().build());
         var result = assertThrows(NotFoundObjectiveInDatabaseException.class, () -> {
             categoryRepositoryImplementation
@@ -153,7 +153,7 @@ public class CategoryRepositoryImplementationFailTest {
         assert expectedObjective != null;
         assertEquals("Objective not found in database", result.getMessage());
 
-        verify(objectiveServiceClient).getObjectiveById(idObjective, idUser);
+        verify(objectiveServiceClient).getObjectiveById(idObjective, idUser, anyString());
     }
 
     @Test
@@ -234,11 +234,11 @@ public class CategoryRepositoryImplementationFailTest {
         // When
         when(categoryRepositoryJpa.findByIdAndIdUser(idCategory, idUser)).thenReturn(Optional.of(expectedCategory));
         ResponseObjectiveDTO mockObjective = new ResponseObjectiveDTO(UUID.randomUUID(), "ObjectiveName", "ObjectiveDescription", "status", null, idUser);
-        when(objectiveServiceClient.getObjectiveById(expectedCategory.getObjectives().get(0), idUser))
+        when(objectiveServiceClient.getObjectiveById(expectedCategory.getObjectives().get(0), idUser, anyString()))
                 .thenReturn(ResponseEntity.ok(mockObjective));
-        when(objectiveServiceClient.getObjectiveById(expectedCategory.getObjectives().get(1), idUser))
+        when(objectiveServiceClient.getObjectiveById(expectedCategory.getObjectives().get(1), idUser, anyString()))
                 .thenReturn(ResponseEntity.notFound().build());
-        when(objectiveServiceClient.getObjectiveById(expectedCategory.getObjectives().get(2), idUser))
+        when(objectiveServiceClient.getObjectiveById(expectedCategory.getObjectives().get(2), idUser, anyString()))
                 .thenReturn(ResponseEntity.ok(mockObjective));
         var result = categoryRepositoryImplementation
                 .getObjectivesByCategory(idCategory, idUser);

@@ -102,7 +102,7 @@ public class CategoryRepositorySuccessTest {
 
         // When
         when(categoryRepositoryJpa.findByIdAndIdUser(requestDTO.idCategory(), idUser)).thenReturn(Optional.of(oldCategory));
-        when(objectiveServiceClient.getObjectiveById(requestDTO.idObjective(), idUser)).thenReturn(ResponseEntity.ok(objective));
+        when(objectiveServiceClient.getObjectiveById(requestDTO.idObjective(), idUser, anyString())).thenReturn(ResponseEntity.ok(objective));
         when(categoryRepositoryJpa.save(newCategory)).thenReturn(newCategory);
         var result = categoryRepositoryImplementation.addObjectiveToCategory(idUser, requestDTO);
 
@@ -119,7 +119,7 @@ public class CategoryRepositorySuccessTest {
         assertEquals(expectedDTO.objective().descriptionObjective(), result.objective().descriptionObjective());
 
         verify(categoryRepositoryJpa).findByIdAndIdUser(requestDTO.idCategory(), idUser);
-        verify(objectiveServiceClient).getObjectiveById(requestDTO.idObjective(), idUser);
+        verify(objectiveServiceClient).getObjectiveById(requestDTO.idObjective(), idUser, anyString());
         verify(categoryRepositoryJpa).save(newCategory);
     }
 
@@ -153,7 +153,7 @@ public class CategoryRepositorySuccessTest {
         var expectedObjective = response.getBody();
 
         // When
-        when(objectiveServiceClient.getObjectiveById(idObjective, idUser)).thenReturn(response);
+        when(objectiveServiceClient.getObjectiveById(idObjective, idUser, anyString())).thenReturn(response);
         var result = categoryRepositoryImplementation.findObjectiveByIdAndIdUser(idObjective, idUser);
 
         // Then
@@ -165,7 +165,7 @@ public class CategoryRepositorySuccessTest {
         assertEquals(expectedObjective.nameObjective(), result.nameObjective());
         assertEquals(expectedObjective.descriptionObjective(), result.descriptionObjective());
 
-        verify(objectiveServiceClient).getObjectiveById(idObjective, idUser);
+        verify(objectiveServiceClient).getObjectiveById(idObjective, idUser, anyString());
     }
 
     @Test
@@ -272,7 +272,7 @@ public class CategoryRepositorySuccessTest {
         // When
         when(categoryRepositoryJpa.findByIdAndIdUser(idCategory, idUser)).thenReturn(Optional.of(expectedCategory));
         ResponseObjectiveDTO mockObjective = new ResponseObjectiveDTO(UUID.randomUUID(), "ObjectiveName", "ObjectiveDescription", "status", null, idUser);
-        when(objectiveServiceClient.getObjectiveById(any(UUID.class), any(UUID.class))).thenReturn(ResponseEntity.ok(mockObjective));
+        when(objectiveServiceClient.getObjectiveById(any(UUID.class), any(UUID.class), any(String.class))).thenReturn(ResponseEntity.ok(mockObjective));
         var result = categoryRepositoryImplementation
                 .getObjectivesByCategory(idCategory, idUser);
 

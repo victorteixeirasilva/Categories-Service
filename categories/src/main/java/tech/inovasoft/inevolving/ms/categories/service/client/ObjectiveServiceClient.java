@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 @FeignClient(name = "objectives-service", url = "${inevolving.uri.ms.objectives}")
 public interface ObjectiveServiceClient {
 
-    @GetMapping("/{idObjective}/{idUser}")
-    ResponseEntity<ResponseObjectiveDTO> getObjectiveById(@PathVariable UUID idObjective, @PathVariable UUID idUser);
+    @GetMapping("/{idObjective}/{idUser}/{token}")
+    ResponseEntity<ResponseObjectiveDTO> getObjectiveById(@PathVariable UUID idObjective, @PathVariable UUID idUser, @PathVariable String token);
 
 }
