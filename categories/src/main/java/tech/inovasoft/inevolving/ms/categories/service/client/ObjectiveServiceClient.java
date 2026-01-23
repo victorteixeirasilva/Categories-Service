@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 public interface ObjectiveServiceClient {
 
     @GetMapping("/{idObjective}/{idUser}/{token}")
-    ResponseEntity<ResponseObjectiveDTO> getObjectiveById(
+    ResponseObjectiveDTO getObjectiveById(
             @PathVariable UUID idObjective,
             @PathVariable UUID idUser,
             @PathVariable String token

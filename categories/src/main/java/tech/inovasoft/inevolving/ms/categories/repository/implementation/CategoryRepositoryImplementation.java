@@ -143,19 +143,16 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
             ErrorInExternalServiceException,
             NotFoundObjectiveInDatabaseException
     {
-        ResponseEntity<ResponseObjectiveDTO> entity;
+        ResponseObjectiveDTO entity;
         try {
             entity = objectiveServiceClient.getObjectiveById(uuid, idUser, getValidToken());
-            if (entity.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
-                throw new NotFoundObjectiveInDatabaseException();
-            }
             return new ResponseObjectiveDTO(
-                    entity.getBody().id(),
-                    entity.getBody().nameObjective(),
-                    entity.getBody().descriptionObjective(),
-                    entity.getBody().statusObjective(),
-                    entity.getBody().completionDate(),
-                    entity.getBody().idUser()
+                    entity.id(),
+                    entity.nameObjective(),
+                    entity.descriptionObjective(),
+                    entity.statusObjective(),
+                    entity.completionDate(),
+                    entity.idUser()
             );
         } catch (FeignException e) {
             if (e.getClass() == FeignException.Unauthorized.class) {
