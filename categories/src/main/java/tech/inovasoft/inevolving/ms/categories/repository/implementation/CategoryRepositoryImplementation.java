@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.request.RequestAddObjectiveToCategoryDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseCategoryAndNewObjectiveDTO;
 import tech.inovasoft.inevolving.ms.categories.domain.dto.response.ResponseMessageDTO;
@@ -20,10 +22,7 @@ import tech.inovasoft.inevolving.ms.categories.service.client.Auth_For_MService.
 import tech.inovasoft.inevolving.ms.categories.service.client.Auth_For_MService.TokenCache;
 import tech.inovasoft.inevolving.ms.categories.service.client.ObjectiveServiceClient;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 public class CategoryRepositoryImplementation implements CategoryRepository {
@@ -36,6 +35,9 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
 
     @Autowired
     private TokenCache tokenCache;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     private String cachedToken;
 
@@ -145,7 +147,7 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     {
         ResponseObjectiveDTO entity;
         try {
-            entity = objectiveServiceClient.getObjectiveById(uuid, idUser, getValidToken());
+            entity = getObjectiveById(uuid, idUser);
             return new ResponseObjectiveDTO(
                     entity.id(),
                     entity.nameObjective(),
@@ -279,5 +281,30 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         }
 
         return objectives;
+    }
+
+    public ResponseObjectiveDTO getObjectiveById(UUID uuid, UUID idUser) throws NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException {
+        String token = getValidToken();
+        String url = "http://172.18.0.8:8088/ms/objectives/{idObjective}/{idUser}/{token}";
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("idObjective", uuid.toString());
+        uriVariables.put("idUser", idUser.toString());
+        uriVariables.put("token", token);
+
+        try {
+            ResponseEntity<ResponseObjectiveDTO> response = restTemplate.getForEntity(
+                    url,
+                    ResponseObjectiveDTO.class,
+                    uriVariables
+            );
+
+            return response.getBody();
+
+        } catch (HttpClientErrorException.NotFound e) {
+            throw new NotFoundObjectiveInDatabaseException();
+        } catch (Exception e) {
+            throw new ErrorInExternalServiceException(e.getMessage());
+        }
     }
 }
