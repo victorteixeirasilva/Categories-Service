@@ -261,16 +261,14 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
     {
         var category = findCategoryByIdAndIdUser(idCategory, idUser);
         List<UUID> objectives = new ArrayList<>();
-        objectives.addAll(category.getObjectives());
 
-        int count = 0;
-        for (UUID id : objectives) {
+        for (UUID id : category.getObjectives()) {
             try {
                 var objective = findObjectiveByIdAndIdUser(id, idUser);
+                objectives.add(objective.id());
             } catch (Exception e) {
-                objectives.remove(count);
+                continue;
             }
-            count++;
         }
 
         category.setObjectives(objectives);
