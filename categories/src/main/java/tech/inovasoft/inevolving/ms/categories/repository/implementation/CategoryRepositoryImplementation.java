@@ -162,7 +162,7 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
                 return findObjectiveByIdAndIdUser(uuid, idUser);
             }
         } catch (Exception e) {
-            throw new ErrorInExternalServiceException("objectiveServiceClient.getObjectiveById");
+            throw new ErrorInExternalServiceException("objectiveServiceClient.getObjectiveById - " + e.getMessage());
         }
 
         return null;
