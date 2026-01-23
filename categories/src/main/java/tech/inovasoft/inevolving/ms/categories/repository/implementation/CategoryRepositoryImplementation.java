@@ -162,7 +162,8 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
                 return findObjectiveByIdAndIdUser(uuid, idUser);
             }
         } catch (Exception e) {
-            throw new ErrorInExternalServiceException("objectiveServiceClient.getObjectiveById - " + e.getMessage());
+            return null;
+//            throw new ErrorInExternalServiceException("objectiveServiceClient.getObjectiveById - " + e.getMessage());
         }
 
         return null;
@@ -265,7 +266,11 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
         for (UUID id : category.getObjectives()) {
             try {
                 var objective = findObjectiveByIdAndIdUser(id, idUser);
-                objectives.add(objective.id());
+                if (objective != null) {
+                    objectives.add(objective.id());
+                } else {
+                    objectives.remove(id);
+                }
             } catch (Exception e) {
                 continue;
             }
