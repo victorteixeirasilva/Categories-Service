@@ -288,7 +288,7 @@ public class CategoryRepositoryImplementation implements CategoryRepository {
 
     public ResponseObjectiveDTO getObjectiveById(UUID uuid, UUID idUser) throws NotFoundObjectiveInDatabaseException, ErrorInExternalServiceException {
         String token = getValidToken();
-        String url = "http://172.18.0.8:8088/ms/objectives/{idObjective}/{idUser}/{token}";
+        String url = "http://objectives-service:8088/ms/objectives/{idObjective}/{idUser}/{token}";
 
         Map<String, String> uriVariables = new HashMap<>();
         uriVariables.put("idObjective", uuid.toString());
