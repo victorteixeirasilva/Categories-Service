@@ -9,6 +9,9 @@
 **A camada de categorias que une seu domínio de negócio à arquitetura de microsserviços — rápida, documentada e pronta para produção.**
 
 ---
+<img width="1536" height="1024" alt="Generatedimage_1774910042281" src="https://github.com/user-attachments/assets/48f801fd-c0ca-4c2f-b3ad-049f26ef5e17" />
+
+
 
 ## Introdução e visão geral
 
